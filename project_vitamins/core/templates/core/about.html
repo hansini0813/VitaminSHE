@@ -1,0 +1,484 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}About VitaminSHE - Our Story & Mission{% endblock %}
+
+{% block content %}
+<div class="about-page">
+    <!-- Header -->
+    <section class="about-header">
+        <div class="container">
+            <h1>About VitaminSHE</h1>
+            <p class="intro">Empowering women through personalized vitamin and nutrition guidance</p>
+        </div>
+    </section>
+
+    <!-- Mission Section -->
+    <section class="mission">
+        <div class="container">
+            <div class="mission-content">
+                <h2>Our Mission</h2>
+                <p>
+                    VitaminSHE was created with a simple mission: to empower women to take control of their health through personalized vitamin tracking, 
+                    evidence-based nutrition recommendations, and access to trusted medical resources. We believe that every woman deserves easy access 
+                    to the tools and knowledge needed to optimize their nutritional health.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Achievement Section -->
+    <section class="achievement">
+        <div class="container">
+            <div class="achievement-badge">
+                <div class="badge-icon">🏆</div>
+                <h3>Hack the Gap 2024</h3>
+                <p><strong>2nd Place Winner</strong></p>
+                <p class="badge-description">
+                    VitaminSHE won 2nd place at Hack the Gap, a hackathon focused on solving real-world problems related to 
+                    gender equity and women's health. This recognition validates our commitment to addressing women's unique 
+                    nutritional and health needs.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Story Section -->
+    <section class="story">
+        <div class="container">
+            <h2 class="section-title">Our Story</h2>
+            <div class="story-content">
+                <div class="story-item">
+                    <h3>The Problem</h3>
+                    <p>
+                        Women face unique nutritional challenges including pregnancy, menopause, hormonal fluctuations, and specific micronutrient 
+                        deficiencies. Yet, most health tracking apps treat everyone the same. There's no easy way for users to:
+                    </p>
+                    <ul>
+                        <li>Track multiple vitamins and minerals consistently</li>
+                        <li>Get personalized recommendations based on their health profile</li>
+                        <li>Access trustworthy, medically-reviewed nutritional information</li>
+                        <li>Find nearby clinics for blood tests to confirm deficiencies</li>
+                    </ul>
+                </div>
+
+                <div class="story-item">
+                    <h3>Our Solution</h3>
+                    <p>
+                        VitaminSHE combines four powerful features into one integrated platform:
+                    </p>
+                    <ul>
+                        <li><strong>Smart Tracking:</strong> Log intake of 12 essential vitamins with multiple sources and units</li>
+                        <li><strong>AI Recommendations:</strong> Rule-based engine that analyzes health profile and suggests personalized vitamins</li>
+                        <li><strong>Health Resources:</strong> Curated library of medical articles and evidence-based information</li>
+                        <li><strong>Clinic Locator:</strong> Find nearby blood testing centers and diagnostic labs using integrated maps</li>
+                    </ul>
+                </div>
+
+                <div class="story-item">
+                    <h3>The Impact</h3>
+                    <p>
+                        By making vitamin tracking and health knowledge accessible, VitaminSHE helps women:
+                    </p>
+                    <ul>
+                        <li>Identify potential vitamin deficiencies early</li>
+                        <li>Make informed decisions about supplementation</li>
+                        <li>Maintain consistent health tracking habits</li>
+                        <li>Access medical resources when needed</li>
+                        <li>Improve overall wellness and quality of life</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-overview">
+        <div class="container">
+            <h2 class="section-title">Core Features</h2>
+            <div class="features-grid">
+                <div class="feature">
+                    <h3>📊 Vitamin Tracking</h3>
+                    <p>Log your daily intake of 12 essential vitamins from various sources. Track adherence and identify patterns in your nutrition.</p>
+                </div>
+                <div class="feature">
+                    <h3>🧬 Smart Recommendations</h3>
+                    <p>AI-powered engine that analyzes your health profile and suggests personalized vitamin recommendations based on your specific needs.</p>
+                </div>
+                <div class="feature">
+                    <h3>📚 Health Resources</h3>
+                    <p>Access hundreds of medically-reviewed articles about vitamins, minerals, nutrition, and health conditions from trusted sources.</p>
+                </div>
+                <div class="feature">
+                    <h3>📍 Clinic Locator</h3>
+                    <p>Find nearby blood testing centers, diagnostic labs, and medical clinics using our integrated Google Maps locator.</p>
+                </div>
+                <div class="feature">
+                    <h3>📈 Health Analytics</h3>
+                    <p>View detailed dashboards showing your vitamin intake patterns, adherence rates, and current health streaks.</p>
+                </div>
+                <div class="feature">
+                    <h3>🔐 Private & Secure</h3>
+                    <p>Your health data is encrypted and protected. User privacy and security are our top priorities.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technical Stack Section -->
+    <section class="tech-stack">
+        <div class="container">
+            <h2 class="section-title">Built With</h2>
+            <div class="stack-grid">
+                <div class="stack-item">
+                    <h4>Backend</h4>
+                    <p>Django 4.2 with SQLite database, providing secure REST APIs and server-side logic</p>
+                </div>
+                <div class="stack-item">
+                    <h4>Frontend</h4>
+                    <p>HTML5, CSS3, and vanilla JavaScript with responsive design for mobile and desktop</p>
+                </div>
+                <div class="stack-item">
+                    <h4>Maps Integration</h4>
+                    <p>Google Maps JavaScript API and Google Places API for location services</p>
+                </div>
+                <div class="stack-item">
+                    <h4>Authentication</h4>
+                    <p>Django's built-in authentication system with secure password hashing and session management</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Values Section -->
+    <section class="values">
+        <div class="container">
+            <h2 class="section-title">Our Values</h2>
+            <div class="values-grid">
+                <div class="value-card">
+                    <h3>Empowerment</h3>
+                    <p>We believe women deserve tools and knowledge to take control of their health and make informed decisions.</p>
+                </div>
+                <div class="value-card">
+                    <h3>Accuracy</h3>
+                    <p>All health information on VitaminSHE is medically reviewed and based on scientific evidence.</p>
+                </div>
+                <div class="value-card">
+                    <h3>Privacy</h3>
+                    <p>Your health data is sacred. We never share, sell, or misuse your personal information.</p>
+                </div>
+                <div class="value-card">
+                    <h3>Accessibility</h3>
+                    <p>Health tracking and wellness tools should be accessible to everyone, regardless of background or resources.</p>
+                </div>
+                <div class="value-card">
+                    <h3>Innovation</h3>
+                    <p>We continuously improve VitaminSHE with user feedback and the latest health and technology advances.</p>
+                </div>
+                <div class="value-card">
+                    <h3>Support</h3>
+                    <p>We're here to help. Accessible support and clear documentation make it easy to get the most from VitaminSHE.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="about-cta">
+        <div class="container">
+            <h2>Join Thousands of Women Optimizing Their Health</h2>
+            <p>Start tracking your vitamin intake and getting personalized recommendations today.</p>
+            {% if user.is_authenticated %}
+                <a href="{% url 'dashboard:index' %}" class="btn btn-primary">Go to Dashboard</a>
+            {% else %}
+                <a href="{% url 'accounts:signup' %}" class="btn btn-primary">Create Your Account</a>
+            {% endif %}
+        </div>
+    </section>
+</div>
+
+<style>
+    .about-page {
+        background: white;
+    }
+
+    .about-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 60px 20px;
+        text-align: center;
+    }
+
+    .about-header h1 {
+        font-size: 2.8rem;
+        margin: 0 0 0.5rem 0;
+    }
+
+    .intro {
+        font-size: 1.2rem;
+        opacity: 0.95;
+        margin: 0;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 1rem;
+    }
+
+    section {
+        padding: 60px 20px;
+    }
+
+    .section-title {
+        text-align: center;
+        font-size: 2.5rem;
+        color: #2c3e50;
+        margin-bottom: 2rem;
+    }
+
+    .mission {
+        background: #f8f9fa;
+    }
+
+    .mission-content {
+        max-width: 800px;
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    .mission h2 {
+        font-size: 2rem;
+        color: #2c3e50;
+        margin-bottom: 1.5rem;
+    }
+
+    .mission p {
+        font-size: 1.05rem;
+        color: #34495e;
+        line-height: 1.8;
+        margin: 0;
+    }
+
+    .achievement {
+        background: white;
+    }
+
+    .achievement-badge {
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+        padding: 3rem 2rem;
+        border-radius: 8px;
+        text-align: center;
+        border: 2px solid #667eea;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .badge-icon {
+        font-size: 4rem;
+        display: block;
+        margin-bottom: 1rem;
+    }
+
+    .achievement-badge h3 {
+        font-size: 2rem;
+        color: #667eea;
+        margin: 0 0 0.5rem 0;
+    }
+
+    .achievement-badge p {
+        color: #34495e;
+        margin: 0.5rem 0;
+    }
+
+    .badge-description {
+        font-size: 1rem;
+        line-height: 1.6;
+        margin-top: 1rem !important;
+    }
+
+    .story {
+        background: white;
+    }
+
+    .story-content {
+        display: grid;
+        gap: 2rem;
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    .story-item {
+        padding: 2rem;
+        background: #f8f9fa;
+        border-radius: 8px;
+        border-left: 4px solid #667eea;
+    }
+
+    .story-item h3 {
+        font-size: 1.5rem;
+        color: #2c3e50;
+        margin-top: 0;
+    }
+
+    .story-item p {
+        color: #34495e;
+        line-height: 1.6;
+        margin-bottom: 1rem;
+    }
+
+    .story-item ul {
+        color: #34495e;
+        line-height: 1.8;
+        margin: 0;
+        padding-left: 1.5rem;
+    }
+
+    .story-item li {
+        margin-bottom: 0.5rem;
+    }
+
+    .features-overview {
+        background: #f8f9fa;
+    }
+
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 2rem;
+    }
+
+    .feature {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .feature h3 {
+        font-size: 1.2rem;
+        color: #2c3e50;
+        margin-top: 0;
+    }
+
+    .feature p {
+        color: #7f8c8d;
+        line-height: 1.6;
+        margin: 0;
+    }
+
+    .tech-stack {
+        background: white;
+    }
+
+    .stack-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 2rem;
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+
+    .stack-item {
+        background: #f0f7ff;
+        padding: 2rem;
+        border-radius: 8px;
+        border-left: 4px solid #3498db;
+    }
+
+    .stack-item h4 {
+        font-size: 1.3rem;
+        color: #2c3e50;
+        margin-top: 0;
+    }
+
+    .stack-item p {
+        color: #34495e;
+        line-height: 1.6;
+        margin: 0;
+    }
+
+    .values {
+        background: #f8f9fa;
+    }
+
+    .values-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+    }
+
+    .value-card {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 8px;
+        text-align: center;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .value-card h3 {
+        font-size: 1.2rem;
+        color: #667eea;
+        margin-top: 0;
+    }
+
+    .value-card p {
+        color: #34495e;
+        line-height: 1.6;
+        margin: 0;
+    }
+
+    .about-cta {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        text-align: center;
+    }
+
+    .about-cta h2 {
+        font-size: 2.2rem;
+        margin: 0 0 1rem 0;
+    }
+
+    .about-cta p {
+        font-size: 1.1rem;
+        margin: 0 0 2rem 0;
+        opacity: 0.95;
+    }
+
+    .btn {
+        display: inline-block;
+        padding: 0.75rem 2rem;
+        background: white;
+        color: #667eea;
+        text-decoration: none;
+        border-radius: 4px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    @media (max-width: 768px) {
+        .about-header h1 {
+            font-size: 1.8rem;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+        }
+
+        .features-grid,
+        .stack-grid,
+        .values-grid {
+            grid-template-columns: 1fr;
+        }
+
+        section {
+            padding: 40px 20px;
+        }
+    }
+</style>
+{% endblock %}

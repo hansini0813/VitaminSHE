@@ -1,0 +1,178 @@
+[
+  {
+    "model": "resources.resourcecategory",
+    "pk": 1,
+    "fields": {
+      "name": "Vitamin A",
+      "slug": "vitamin-a",
+      "description": "Learn about Vitamin A, its sources, benefits, and recommended daily intake."
+    }
+  },
+  {
+    "model": "resources.resourcecategory",
+    "pk": 2,
+    "fields": {
+      "name": "Vitamin B Complex",
+      "slug": "vitamin-b-complex",
+      "description": "Understand the B vitamins, including B12, B6, and folate, and their roles in energy and metabolism."
+    }
+  },
+  {
+    "model": "resources.resourcecategory",
+    "pk": 3,
+    "fields": {
+      "name": "Vitamin C",
+      "slug": "vitamin-c",
+      "description": "Discover Vitamin C's importance for immunity and how to maintain adequate levels."
+    }
+  },
+  {
+    "model": "resources.resourcecategory",
+    "pk": 4,
+    "fields": {
+      "name": "Vitamin D",
+      "slug": "vitamin-d",
+      "description": "Explore Vitamin D's critical role in bone health, immunity, and seasonal affective disorder."
+    }
+  },
+  {
+    "model": "resources.resourcecategory",
+    "pk": 5,
+    "fields": {
+      "name": "Vitamin E",
+      "slug": "vitamin-e",
+      "description": "Learn about Vitamin E as an antioxidant and its benefits for skin and heart health."
+    }
+  },
+  {
+    "model": "resources.resourcecategory",
+    "pk": 6,
+    "fields": {
+      "name": "Minerals & Trace Elements",
+      "slug": "minerals-trace-elements",
+      "description": "Understand essential minerals like iron, calcium, magnesium, and zinc."
+    }
+  },
+  {
+    "model": "resources.resourcecategory",
+    "pk": 7,
+    "fields": {
+      "name": "Nutrition & Diet",
+      "slug": "nutrition-diet",
+      "description": "General nutrition advice and dietary guidelines for optimal health."
+    }
+  },
+  {
+    "model": "resources.resourcecategory",
+    "pk": 8,
+    "fields": {
+      "name": "Health Conditions",
+      "slug": "health-conditions",
+      "description": "Learn about specific health conditions and nutritional considerations."
+    }
+  },
+  {
+    "model": "resources.resourcearticle",
+    "pk": 1,
+    "fields": {
+      "category": 1,
+      "title": "The Complete Guide to Vitamin A: Vision, Immunity, and Skin Health",
+      "slug": "complete-guide-vitamin-a-vision-immunity-skin",
+      "summary": "Discover how Vitamin A supports eye health, boosts immunity, and maintains healthy skin. Learn optimal sources and daily requirements.",
+      "content": "<h2>Understanding Vitamin A</h2><p>Vitamin A is a fat-soluble vitamin that plays a crucial role in vision, immune function, and skin health. There are two types of Vitamin A found in food: preformed Vitamin A (retinol) from animal products and provitamin A (beta-carotene) from plant sources.</p><h2>Functions of Vitamin A</h2><ul><li><strong>Vision Support:</strong> Vitamin A is essential for the production of rhodopsin, a protein that allows your eyes to see in low-light conditions. It also protects the cornea, the outermost layer of the eye.</li><li><strong>Immune Function:</strong> Vitamin A helps maintain the integrity of mucous membranes and supports the production of white blood cells, both critical components of your immune system.</li><li><strong>Skin Health:</strong> This vitamin promotes the growth and repair of skin cells and is often used in skincare products.</li><li><strong>Gene Regulation:</strong> Vitamin A regulates the expression of genes involved in growth and development.</li></ul><h2>Best Food Sources</h2><p><strong>Animal-based sources (Retinol):</strong></p><ul><li>Liver and liver products</li><li>Eggs</li><li>Butter and fortified dairy products</li><li>Fatty fish</li></ul><p><strong>Plant-based sources (Beta-carotene):</strong></p><ul><li>Sweet potatoes</li><li>Carrots</li><li>Spinach and kale</li><li>Cantaloupe</li><li>Apricots</li></ul><h2>Recommended Daily Intake</h2><p>The recommended dietary allowance (RDA) varies by age and sex: Adult men need 900 mcg, while adult women need 700 mcg daily.</p><h2>Signs of Deficiency</h2><p>Vitamin A deficiency is rare in developed countries but can cause night blindness, dry eyes, and weakened immunity. Severe deficiency can lead to permanent vision loss.</p><h2>Over-consumption Risks</h2><p>While rare, excessive Vitamin A intake from supplements can be toxic. The tolerable upper limit for adults is 3,000 mcg daily. This is why it's important to consult healthcare providers before taking high-dose supplements.</p>",
+      "is_published": true,
+      "published_at": "2025-03-20T10:00:00Z"
+    }
+  },
+  {
+    "model": "resources.resourcearticle",
+    "pk": 2,
+    "fields": {
+      "category": 4,
+      "title": "Vitamin D: The Sunshine Vitamin and Its Essential Roles",
+      "slug": "vitamin-d-sunshine-vitamin-essential-roles",
+      "summary": "Explore Vitamin D's critical functions in calcium absorption, bone health, and immune system support. Learn about sun exposure, food sources, and supplementation.",
+      "content": "<h2>What is Vitamin D?</h2><p>Vitamin D is a fat-soluble vitamin and hormone that your body can synthesize when exposed to sunlight. It regulates calcium and phosphate absorption, essential for maintaining healthy bones and teeth.</p><h2>Key Functions of Vitamin D</h2><ul><li><strong>Bone Health:</strong> Vitamin D helps your body absorb calcium and phosphate from food, essential minerals for bone formation and strength.</li><li><strong>Immune System:</strong> Vitamin D modulates the immune response, helping your body fight infections and regulate inflammation.</li><li><strong>Muscle Function:</strong> This vitamin supports muscle strength and function.</li><li><strong>Cardiovascular Health:</strong> Research suggests Vitamin D plays a role in heart health by regulating blood pressure.</li><li><strong>Mood Regulation:</strong> Low Vitamin D levels have been associated with depression and seasonal affective disorder (SAD).</li></ul><h2>Vitamin D Sources</h2><p><strong>Sunlight:</strong> 10-30 minutes of midday sun several times per week can help your body produce sufficient Vitamin D.</p><p><strong>Food sources:</strong></p><ul><li>Fatty fish (salmon, mackerel, sardines)</li><li>Egg yolks</li><li>Fortified milk and cereals</li><li>Mushrooms exposed to sunlight</li></ul><h2>Recommended Intake</h2><p>The RDA for Vitamin D is 600-800 IU daily for most adults. However, many experts recommend higher levels, especially for those with limited sun exposure.</p><h2>Vitamin D Deficiency</h2><p>Signs include bone pain, muscle weakness, fatigue, and frequent infections. In children, severe deficiency can cause rickets, a condition that affects bone development.</p><h2>Who Needs More Vitamin D?</h2><ul><li>People with dark skin living in northern climates</li><li>Individuals who spend little time in sunlight</li><li>People with dietary restrictions limiting fish and dairy</li><li>Those with malabsorption disorders</li></ul>",
+      "is_published": true,
+      "published_at": "2025-03-18T14:30:00Z"
+    }
+  },
+  {
+    "model": "resources.resourcearticle",
+    "pk": 3,
+    "fields": {
+      "category": 2,
+      "title": "Vitamin B12: Energy, Metabolism, and Nervous System Health",
+      "slug": "vitamin-b12-energy-metabolism-nervous-system",
+      "summary": "Learn about Vitamin B12's crucial role in energy production, DNA synthesis, and nervous system health. Explore sources for vegans and vegetarians.",
+      "content": "<h2>Understanding Vitamin B12</h2><p>Vitamin B12 (cobalamin) is a water-soluble vitamin essential for red blood cell formation, DNA synthesis, and proper nervous system function. Unlike other B vitamins, it's primarily found in animal products, making it a critical nutrient for vegetarians and vegans.</p><h2>Key Functions</h2><ul><li><strong>Energy Production:</strong> B12 is vital for converting carbohydrates into glucose, which your body uses for energy.</li><li><strong>DNA Synthesis:</strong> This vitamin is essential for creating and maintaining DNA.</li><li><strong>Nervous System:</strong> B12 helps maintain the protective coating (myelin) around nerve cells.</li><li><strong>Red Blood Cell Formation:</strong> B12 is necessary for producing healthy red blood cells.</li><li><strong>Metabolism:</strong> This vitamin plays a role in metabolizing amino acids and fatty acids.</li></ul><h2>Best Sources</h2><p><strong>Animal-based sources:</strong></p><ul><li>Beef and liver</li><li>Fish and seafood</li><li>Eggs</li><li>Dairy products</li></ul><p><strong>Fortified plant-based sources:</strong></p><ul><li>Fortified plant-based milks</li><li>Nutritional yeast</li><li>Fortified breakfast cereals</li><li>Some meat substitutes</li></ul><h2>Recommended Daily Intake</h2><p>Adults need 2.4 mcg of Vitamin B12 daily. The recommended form for supplementation differs from food sources, as the body better absorbs naturally occurring B12.</p><h2>Deficiency Symptoms</h2><p>Deficiency can cause fatigue, weakness, numbness in extremities, difficulty walking, and cognitive difficulties. Over time, B12 deficiency can cause permanent nerve damage.</p><h2>Special Considerations</h2><p>Vegans and vegetarians need to ensure adequate B12 intake through fortified foods or supplements. People taking certain diabetes medications or having digestive disorders should monitor B12 levels closely.</p>",
+      "is_published": true,
+      "published_at": "2025-03-16T09:15:00Z"
+    }
+  },
+  {
+    "model": "resources.resourcearticle",
+    "pk": 4,
+    "fields": {
+      "category": 3,
+      "title": "Vitamin C: More Than Just Cold Prevention",
+      "slug": "vitamin-c-more-than-cold-prevention",
+      "summary": "Discover Vitamin C's diverse roles in immunity, collagen formation, and antioxidant protection. Explore optimal intake levels and food sources.",
+      "content": "<h2>Beyond Cold Prevention</h2><p>While Vitamin C is famous for supposedly preventing colds, its actual roles in your body are much broader and equally important. This water-soluble vitamin is essential for immune function, collagen formation, and antioxidant protection.</p><h2>Key Functions</h2><ul><li><strong>Immune Support:</strong> Vitamin C supports the production and function of white blood cells, helping your body fight infections.</li><li><strong>Collagen Formation:</strong> This vitamin is essential for creating and maintaining collagen, which provides structure to skin, bones, and connective tissue.</li><li><strong>Antioxidant Protection:</strong> Vitamin C neutralizes free radicals, protecting cells from oxidative damage.</li><li><strong>Wound Healing:</strong> This vitamin aids in tissue repair and wound healing.</li><li><strong>Iron Absorption:</strong> Vitamin C enhances the absorption of plant-based iron.</li></ul><h2>Excellent Food Sources</h2><ul><li>Citrus fruits (oranges, lemons, limes)</li><li>Berries (strawberries, raspberries, blueberries)</li><li>Bell peppers</li><li>Broccoli and other cruciferous vegetables</li><li>Kiwi fruit</li><li>Tomatoes</li><li>Leafy greens</li></ul><h2>Recommended Daily Intake</h2><p>Men need 90 mg daily, while women need 75 mg. Smokers need an additional 35 mg daily. During illness, some people take higher doses, though benefits of megadoses are debated.</p><h2>Deficiency Signs</h2><p>Severe deficiency (scurvy) is rare in developed countries but can cause bleeding gums, poor wound healing, and joint pain.</p><h2>Tips for Maximum Retention</h2><p>Vitamin C is sensitive to heat and oxygen. To retain maximum content: eat fresh fruits and vegetables raw when possible, cook vegetables briefly with minimal water, and consume promptly after preparation.</p>",
+      "is_published": true,
+      "published_at": "2025-03-14T11:45:00Z"
+    }
+  },
+  {
+    "model": "resources.resourcearticle",
+    "pk": 5,
+    "fields": {
+      "category": 6,
+      "title": "Iron: Essential for Energy and Oxygen Transport",
+      "slug": "iron-essential-energy-oxygen-transport",
+      "summary": "Understand iron's critical role in oxygen transport and energy production. Learn about heme vs. non-heme iron, absorption enhancement, and deficiency prevention.",
+      "content": "<h2>Why Iron Matters</h2><p>Iron is a mineral essential for creating hemoglobin, the protein in red blood cells that carries oxygen throughout your body. It's also involved in energy production and immune function.</p><h2>Two Types of Iron</h2><p><strong>Heme Iron (15-35% absorption rate):</strong> Found in animal products, heme iron is highly absorbable. Sources include red meat, poultry, and fish.</p><p><strong>Non-heme Iron (2-20% absorption rate):</strong> Found in plant-based foods, fortified cereals, and supplements, non-heme iron has lower bioavailability but can be enhanced through pairing with Vitamin C.</p><h2>Recommended Daily Intake</h2><p>Adult men need 8 mg daily, while women aged 19-50 need 18 mg daily (increasing to 8 mg after age 51 due to menopause-related hormonal changes).</p><h2>Maximizing Iron Absorption</h2><ul><li>Combine iron-rich foods with Vitamin C sources (citrus, berries, peppers)</li><li>Consume iron-rich foods separately from calcium supplements (which inhibit absorption)</li><li>Use cast-iron cookware</li><li>Cook meat and poultry to enhance absorption</li></ul><h2>Signs of Iron Deficiency</h2><p>Fatigue, weakness, shortness of breath, dizziness, cold hands and feet, and brittle nails are common signs. Severe deficiency can cause iron-deficiency anemia.</p><h2>Iron-Rich Food Sources</h2><p><strong>Heme sources:</strong> Red meat, chicken, fish, shellfish</p><p><strong>Plant-based sources:</strong> Beans, lentils, fortified cereals, dark leafy greens, tofu, dried fruits</p>",
+      "is_published": true,
+      "published_at": "2025-03-12T15:20:00Z"
+    }
+  },
+  {
+    "model": "resources.resourcearticle",
+    "pk": 6,
+    "fields": {
+      "category": 7,
+      "title": "Building a Balanced Diet: The Foundation of Health",
+      "slug": "building-balanced-diet-foundation-of-health",
+      "summary": "Learn nutritional guidelines for creating balanced meals that include all essential nutrients. Explore macronutrients, micronutrients, and practical meal planning.",
+      "content": "<h2>The Basics of Balanced Nutrition</h2><p>A balanced diet includes a variety of foods from all food groups in appropriate proportions. While nutritional needs vary by individual, certain principles apply universally.</p><h2>The Five Food Groups</h2><ul><li><strong>Fruits:</strong> Rich in vitamins, minerals, and fiber. Aim for variety in color to ensure diverse nutrient intake.</li><li><strong>Vegetables:</strong> Essential for fiber, vitamins, and minerals. Incorporate leafy greens, cruciferous vegetables, and colorful options.</li><li><strong>Grains:</strong> Choose whole grains for fiber and B vitamins. Make at least half your grain intake whole grains.</li><li><strong>Protein:</strong> Include varied sources: lean meats, fish, eggs, beans, nuts, and seeds for diverse nutrient profiles.</li><li><strong>Dairy or Alternatives:</strong> Important for calcium and Vitamin D. Choose fortified alternatives if lactose-intolerant.</li></ul><h2>Macronutrient Balance</h2><p>Most health organizations recommend: 45-65% of calories from carbohydrates, 20-35% from fats, and 10-35% from protein.</p><h2>Micronutrient Density</h2><p>Focus on nutrient-dense foods that provide vitamins and minerals relative to calorie content. Limit empty-calorie foods high in sugar and fat but low in nutrients.</p><h2>Practical Meal Planning Tips</h2><ul><li>Build meals around vegetables (half your plate)</li><li>Include lean protein at each meal</li><li>Choose whole grains over refined options</li><li>Incorporate healthy fats (olive oil, avocado, nuts)</li><li>Stay hydrated with water</li><li>Limit sodium, added sugar, and saturated fats</li></ul><h2>Individual Variations</h2><p>Dietary needs vary based on age, activity level, health conditions, and cultural preferences. Consider consulting a registered dietitian for personalized guidance.</p>",
+      "is_published": true,
+      "published_at": "2025-03-10T13:00:00Z"
+    }
+  },
+  {
+    "model": "resources.resourcearticle",
+    "pk": 7,
+    "fields": {
+      "category": 8,
+      "title": "Nutrition and Pregnancy: Critical Nutrients for Mother and Baby",
+      "slug": "nutrition-pregnancy-critical-nutrients-mother-baby",
+      "summary": "Overview of essential nutrients for pregnancy including folate, iron, and calcium. Learn how proper nutrition supports fetal development.",
+      "content": "<h2>Nutritional Needs During Pregnancy</h2><p>Pregnancy dramatically increases nutritional requirements. While you don't need to \"eat for two,\" you do need to ensure adequate intake of specific nutrients for fetal development and maternal health.</p><h2>Critical Nutrients</h2><ul><li><strong>Folate/Folic Acid:</strong> Essential for neural tube development. Aim for 400 mcg daily (600 mcg during pregnancy). Rich sources include leafy greens, legumes, and fortified grains.</li><li><strong>Iron:</strong> Pregnancy increases iron needs to 27 mg daily due to increased blood volume. Iron supports oxygen transport and prevents anemia.</li><li><strong>Calcium:</strong> Needed for fetal bone development. Pregnant women need 1,000 mg daily. Sources include dairy, fortified alternatives, and leafy greens.</li><li><strong>Protein:</strong> Essential for fetal growth and development. Pregnant women need approximately 71 grams daily.</li><li><strong>Vitamin D:</strong> Supports calcium absorption and fetal bone development. 600 IU daily is recommended.</li><li><strong>Omega-3 Fatty Acids:</strong> Support fetal brain development. Including fish (low-mercury options) 2-3 times weekly is beneficial.</li></ul><h2>Weight Gain Guidelines</h2><p>Proper weight gain supports fetal development. Recommendations vary based on pre-pregnancy weight: normal weight individuals should gain 25-35 pounds, underweight individuals 28-40 pounds, and overweight or obese individuals 11-25 pounds.</p><h2>Foods to Avoid</h2><ul><li>High-mercury fish (shark, swordfish)</li><li>Unpasteurized dairy and soft cheeses</li><li>Raw or undercooked meats, eggs, and seafood</li><li>Excessive caffeine (more than 200 mg daily)</li><li>Alcohol in any amount</li></ul><h2>Working with Healthcare Providers</h2><p>Prenatal vitamins are typically recommended to ensure adequate intake of critical nutrients. Individual needs may vary based on diet, health status, and pregnancy-specific factors. Consult your healthcare provider about supplementation and dietary modifications.</p>",
+      "is_published": true,
+      "published_at": "2025-03-08T10:30:00Z"
+    }
+  },
+  {
+    "model": "resources.resourcearticle",
+    "pk": 8,
+    "fields": {
+      "category": 5,
+      "title": "Vitamin E: The Antioxidant Powerhouse",
+      "slug": "vitamin-e-antioxidant-powerhouse",
+      "summary": "Explore Vitamin E's antioxidant properties and its role in skin health, immune function, and disease prevention.",
+      "content": "<h2>Understanding Vitamin E</h2><p>Vitamin E is a fat-soluble vitamin and potent antioxidant that protects cells from oxidative damage. It exists in multiple forms (tocopherols and tocotrienols), with alpha-tocopherol being the most biologically active in humans.</p><h2>Antioxidant Functions</h2><ul><li><strong>Free Radical Protection:</strong> Vitamin E neutralizes harmful free radicals, protecting cell membranes and DNA.</li><li><strong>Cellular Health:</strong> This protection supports healthy aging and may reduce disease risk.</li><li><strong>Skin Health:</strong> Often used in skincare products for its protective and regenerative properties.</li></ul><h2>Additional Health Benefits</h2><ul><li>Supports immune function</li><li>May help reduce inflammation</li><li>Potentially supports eye health</li><li>May aid in heart health by reducing oxidative stress</li></ul><h2>Best Food Sources</h2><ul><li>Vegetable oils (wheat germ, sunflower)</li><li>Nuts and seeds (almonds, hazelnuts, sunflower seeds)</li><li>Leafy greens (spinach, kale)</li><li>Fortified cereals</li><li>Vegetable-based spreads</li></ul><h2>Recommended Daily Intake</h2><p>Adults need 15 mg (22.4 IU) of alpha-tocopherol daily. Most people who eat a balanced diet obtain sufficient Vitamin E from food sources.</p><h2>Supplementation Considerations</h2><p>While Vitamin E supplements are generally safe, high-dose supplementation may interact with blood thinners. Consult your healthcare provider before taking supplements, especially if on medications.</p>",
+      "is_published": true,
+      "published_at": "2025-03-06T14:45:00Z"
+    }
+  }
+]

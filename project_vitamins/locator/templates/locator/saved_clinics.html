@@ -1,0 +1,392 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Saved Clinics - VitaminSHE{% endblock %}
+
+{% block content %}
+<div class="saved-clinics-page">
+    <div class="page-header">
+        <h1>My Saved Clinics</h1>
+        <p class="subtitle">Clinics and facilities you've saved for quick access</p>
+    </div>
+
+    <div class="page-container">
+        {% if saved_clinics %}
+            <div class="clinics-grid">
+                {% for clinic in saved_clinics %}
+                    <div class="clinic-card">
+                        <div class="clinic-card-header">
+                            <h3>{{ clinic.name }}</h3>
+                            <button class="remove-btn" data-clinic-id="{{ clinic.id }}" title="Remove clinic">
+                                ✕
+                            </button>
+                        </div>
+
+                        <div class="clinic-info">
+                            <p class="address">
+                                <span class="icon">📍</span>
+                                {{ clinic.address_line }}{% if clinic.city %}, {{ clinic.city }}{% endif %}
+                            </p>
+
+                            {% if clinic.phone %}
+                                <p class="phone">
+                                    <span class="icon">📞</span>
+                                    <a href="tel:{{ clinic.phone }}">{{ clinic.phone }}</a>
+                                </p>
+                            {% endif %}
+
+                            {% if clinic.website %}
+                                <p class="website">
+                                    <span class="icon">🌐</span>
+                                    <a href="{{ clinic.website }}" target="_blank">Visit Website</a>
+                                </p>
+                            {% endif %}
+
+                            {% if clinic.notes %}
+                                <p class="notes">
+                                    <span class="icon">📝</span>
+                                    {{ clinic.notes }}
+                                </p>
+                            {% endif %}
+
+                            {% if clinic.latitude and clinic.longitude %}
+                                <p class="saved-date">
+                                    Saved on {{ clinic.saved_at|date:"M d, Y" }}
+                                </p>
+                            {% endif %}
+                        </div>
+
+                        <div class="clinic-actions">
+                            {% if clinic.latitude and clinic.longitude %}
+                                <a href="https://www.google.com/maps/dir/?api=1&destination={{ clinic.latitude }},{{ clinic.longitude }}"
+                                   target="_blank"
+                                   class="btn-directions">
+                                    Get Directions
+                                </a>
+                            {% endif %}
+                            <a href="{% url 'locator:index' %}" class="btn-find-more">
+                                Find Similar
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="page-actions">
+                <a href="{% url 'locator:index' %}" class="btn-back">← Back to Locator</a>
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <div class="empty-icon">⭐</div>
+                <h2>No Saved Clinics Yet</h2>
+                <p>Start searching for nearby clinics and save your favorites for quick access.</p>
+                <a href="{% url 'locator:index' %}" class="btn-primary">Search for Clinics</a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<style>
+    .saved-clinics-page {
+        display: flex;
+        flex-direction: column;
+        min-height: calc(100vh - 80px);
+        background: #f8f9fa;
+    }
+
+    .page-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 2rem 1rem;
+        text-align: center;
+    }
+
+    .page-header h1 {
+        font-size: 2.2rem;
+        margin: 0 0 0.5rem 0;
+    }
+
+    .subtitle {
+        font-size: 1.1rem;
+        opacity: 0.9;
+        margin: 0;
+    }
+
+    .page-container {
+        flex: 1;
+        max-width: 1200px;
+        margin: 0 auto;
+        width: 100%;
+        padding: 2rem 1rem;
+    }
+
+    .clinics-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .clinic-card {
+        background: white;
+        border-radius: 8px;
+        padding: 1.5rem;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    .clinic-card:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        transform: translateY(-2px);
+    }
+
+    .clinic-card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 1rem;
+        margin-bottom: 1rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    .clinic-card h3 {
+        margin: 0;
+        font-size: 1.2rem;
+        color: #2c3e50;
+        flex: 1;
+    }
+
+    .remove-btn {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: #e74c3c;
+        padding: 0;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.2s ease;
+    }
+
+    .remove-btn:hover {
+        transform: scale(1.3);
+    }
+
+    .clinic-info {
+        margin-bottom: 1.5rem;
+    }
+
+    .clinic-info p {
+        margin: 0.5rem 0;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.95rem;
+        color: #34495e;
+    }
+
+    .clinic-info .icon {
+        font-size: 1.1rem;
+    }
+
+    .address {
+        color: #667eea;
+        font-weight: 600;
+    }
+
+    .phone a,
+    .website a {
+        color: #667eea;
+        text-decoration: none;
+    }
+
+    .phone a:hover,
+    .website a:hover {
+        text-decoration: underline;
+    }
+
+    .notes {
+        background: #f0f7ff;
+        padding: 0.75rem;
+        border-radius: 4px;
+        border-left: 3px solid #3498db;
+        color: #2c3e50;
+    }
+
+    .saved-date {
+        font-size: 0.85rem;
+        color: #7f8c8d;
+        margin-top: 1rem !important;
+    }
+
+    .clinic-actions {
+        display: flex;
+        gap: 0.75rem;
+    }
+
+    .btn-directions,
+    .btn-find-more {
+        flex: 1;
+        padding: 0.75rem 1rem;
+        border-radius: 4px;
+        text-decoration: none;
+        text-align: center;
+        font-weight: 600;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+    }
+
+    .btn-directions {
+        background: #667eea;
+        color: white;
+    }
+
+    .btn-directions:hover {
+        background: #5568d3;
+    }
+
+    .btn-find-more {
+        background: #ecf0f1;
+        color: #2c3e50;
+        border: 1px solid #bdc3c7;
+    }
+
+    .btn-find-more:hover {
+        background: #d5dbdb;
+    }
+
+    .page-actions {
+        text-align: center;
+        margin-top: 2rem;
+    }
+
+    .btn-back {
+        display: inline-block;
+        background: white;
+        color: #667eea;
+        padding: 0.75rem 1.5rem;
+        border-radius: 4px;
+        text-decoration: none;
+        font-weight: 600;
+        border: 1px solid #667eea;
+        transition: all 0.3s ease;
+    }
+
+    .btn-back:hover {
+        background: #667eea;
+        color: white;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 3rem 1rem;
+        background: white;
+        border-radius: 8px;
+    }
+
+    .empty-icon {
+        font-size: 3rem;
+        display: block;
+        margin-bottom: 1rem;
+    }
+
+    .empty-state h2 {
+        font-size: 1.8rem;
+        color: #2c3e50;
+        margin: 0 0 0.5rem 0;
+    }
+
+    .empty-state p {
+        color: #7f8c8d;
+        font-size: 1.05rem;
+        margin: 0 0 1.5rem 0;
+    }
+
+    .btn-primary {
+        display: inline-block;
+        background: #667eea;
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border-radius: 4px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: background 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        background: #5568d3;
+    }
+
+    @media (max-width: 768px) {
+        .page-header h1 {
+            font-size: 1.6rem;
+        }
+
+        .clinics-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .clinic-actions {
+            flex-direction: column;
+        }
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const removeButtons = document.querySelectorAll('.remove-btn');
+        
+        removeButtons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                if (confirm('Are you sure you want to remove this clinic?')) {
+                    const clinicId = this.dataset.clinicId;
+                    removeClinic(clinicId);
+                }
+            });
+        });
+    });
+
+    function removeClinic(clinicId) {
+        fetch('/locator/api/remove/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCsrfToken(),
+            },
+            body: JSON.stringify({ clinic_id: clinicId }),
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    location.reload();
+                } else {
+                    alert('Error removing clinic: ' + data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error removing clinic');
+            });
+    }
+
+    function getCsrfToken() {
+        const name = 'csrftoken';
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === name + '=') {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+</script>
+{% endblock %}

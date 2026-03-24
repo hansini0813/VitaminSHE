@@ -1,0 +1,394 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ article.title }} - VitaminSHE{% endblock %}
+
+{% block content %}
+<div class="article-detail">
+    <div class="article-breadcrumb">
+        <a href="{% url 'resources:list' %}">Resources</a>
+        <span>/</span>
+        <a href="{% url 'resources:list' %}?category={{ article.category.slug }}">
+            {{ article.category.name }}
+        </a>
+        <span>/</span>
+        <span class="current">{{ article.title }}</span>
+    </div>
+
+    <!-- Medical Disclaimer -->
+    <div class="medical-disclaimer">
+        <div class="disclaimer-icon">ⓘ</div>
+        <div class="disclaimer-content">
+            <strong>Medical Disclaimer:</strong> This article is for educational purposes only and should not be considered medical advice. Always consult with a qualified healthcare professional before making any dietary changes or starting vitamin supplements.
+        </div>
+    </div>
+
+    <article class="article-content">
+        <header class="article-header">
+            <div class="article-meta">
+                <span class="category-badge">{{ article.category.name }}</span>
+                <span class="published-date">
+                    Published on {{ article.published_at|date:"F d, Y" }}
+                </span>
+            </div>
+            <h1>{{ article.title }}</h1>
+            <p class="article-excerpt">{{ article.summary }}</p>
+        </header>
+
+        <div class="article-body">
+            {{ article.content|safe }}
+        </div>
+
+        {% if user.is_authenticated %}
+            <div class="article-actions">
+                <button class="save-article-btn {% if is_saved %}saved{% endif %}" 
+                        data-article-id="{{ article.id }}"
+                        data-is-saved="{% if is_saved %}true{% else %}false{% endif %}">
+                    <span class="save-icon">{% if is_saved %}★{% else %}☆{% endif %}</span>
+                    <span class="save-text">{% if is_saved %}Saved{% else %}Save Article{% endif %}</span>
+                </button>
+            </div>
+        {% else %}
+            <div class="article-actions">
+                <p class="login-prompt">
+                    <a href="{% url 'accounts:login' %}">Sign in</a> to save articles to your collection.
+                </p>
+            </div>
+        {% endif %}
+    </article>
+
+    <!-- Related Articles -->
+    {% if related_articles %}
+        <aside class="related-articles">
+            <h2>Related Articles in {{ article.category.name }}</h2>
+            <div class="related-grid">
+                {% for related in related_articles %}
+                    <div class="related-card">
+                        <h3>
+                            <a href="{% url 'resources:detail' related.slug %}">
+                                {{ related.title }}
+                            </a>
+                        </h3>
+                        <p>{{ related.summary }}</p>
+                        <a href="{% url 'resources:detail' related.slug %}" class="read-more">
+                            Read Article →
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        </aside>
+    {% endif %}
+
+    <!-- Navigation -->
+    <nav class="article-nav">
+        <a href="{% url 'resources:list' %}" class="nav-link">← Back to Resources</a>
+    </nav>
+</div>
+
+<style>
+    .article-detail {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+    }
+
+    .article-breadcrumb {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+        font-size: 0.9rem;
+        color: #7f8c8d;
+        margin-bottom: 2rem;
+    }
+
+    .article-breadcrumb a {
+        color: #3498db;
+        text-decoration: none;
+    }
+
+    .article-breadcrumb a:hover {
+        text-decoration: underline;
+    }
+
+    .article-breadcrumb .current {
+        color: #2c3e50;
+        font-weight: 600;
+    }
+
+    .medical-disclaimer {
+        display: flex;
+        gap: 1rem;
+        background: #e8f4f8;
+        border-left: 4px solid #3498db;
+        padding: 1rem;
+        border-radius: 4px;
+        margin-bottom: 2rem;
+        font-size: 0.95rem;
+    }
+
+    .disclaimer-icon {
+        font-size: 1.5rem;
+        color: #3498db;
+        flex-shrink: 0;
+    }
+
+    .disclaimer-content {
+        color: #34495e;
+        line-height: 1.6;
+    }
+
+    .article-content {
+        background: white;
+        border-radius: 8px;
+        padding: 2rem;
+        line-height: 1.8;
+    }
+
+    .article-header {
+        margin-bottom: 2rem;
+        border-bottom: 2px solid #ecf0f1;
+        padding-bottom: 2rem;
+    }
+
+    .article-meta {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        margin-bottom: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .category-badge {
+        display: inline-block;
+        background: #3498db;
+        color: white;
+        padding: 0.4rem 0.8rem;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
+
+    .published-date {
+        color: #7f8c8d;
+        font-size: 0.9rem;
+    }
+
+    .article-header h1 {
+        font-size: 2.2rem;
+        color: #2c3e50;
+        margin: 1rem 0;
+        line-height: 1.3;
+    }
+
+    .article-excerpt {
+        font-size: 1.1rem;
+        color: #7f8c8d;
+        font-style: italic;
+        margin: 1rem 0 0 0;
+    }
+
+    .article-body {
+        margin-bottom: 2rem;
+    }
+
+    .article-body h2 {
+        font-size: 1.5rem;
+        color: #2c3e50;
+        margin: 2rem 0 1rem 0;
+    }
+
+    .article-body h3 {
+        font-size: 1.2rem;
+        color: #34495e;
+        margin: 1.5rem 0 0.5rem 0;
+    }
+
+    .article-body p {
+        margin-bottom: 1rem;
+        color: #34495e;
+        line-height: 1.8;
+    }
+
+    .article-body ul,
+    .article-body ol {
+        margin: 1rem 0 1rem 2rem;
+        color: #34495e;
+    }
+
+    .article-body li {
+        margin-bottom: 0.5rem;
+    }
+
+    .article-body blockquote {
+        border-left: 4px solid #3498db;
+        padding-left: 1rem;
+        margin: 1.5rem 0;
+        color: #7f8c8d;
+        font-style: italic;
+    }
+
+    .article-body a {
+        color: #3498db;
+        text-decoration: none;
+    }
+
+    .article-body a:hover {
+        text-decoration: underline;
+    }
+
+    .article-actions {
+        padding: 1.5rem;
+        background: #f8f9fa;
+        border-radius: 4px;
+        margin: 1.5rem 0;
+    }
+
+    .save-article-btn {
+        background: #3498db;
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.3s ease;
+    }
+
+    .save-article-btn:hover {
+        background: #2980b9;
+    }
+
+    .save-article-btn.saved {
+        background: #27ae60;
+    }
+
+    .save-article-btn.saved:hover {
+        background: #229954;
+    }
+
+    .save-icon {
+        font-size: 1.2rem;
+    }
+
+    .login-prompt {
+        margin: 0;
+        color: #7f8c8d;
+    }
+
+    .login-prompt a {
+        color: #3498db;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .related-articles {
+        margin: 3rem 0;
+        padding: 2rem;
+        background: #f8f9fa;
+        border-radius: 8px;
+    }
+
+    .related-articles h2 {
+        font-size: 1.5rem;
+        color: #2c3e50;
+        margin-bottom: 1.5rem;
+    }
+
+    .related-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .related-card {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 4px;
+        border-left: 3px solid #3498db;
+    }
+
+    .related-card h3 {
+        font-size: 1.1rem;
+        margin: 0 0 0.5rem 0;
+    }
+
+    .related-card h3 a {
+        color: #2c3e50;
+        text-decoration: none;
+    }
+
+    .related-card h3 a:hover {
+        color: #3498db;
+    }
+
+    .related-card p {
+        color: #7f8c8d;
+        font-size: 0.95rem;
+        margin: 0.5rem 0 1rem 0;
+        line-height: 1.6;
+    }
+
+    .read-more {
+        color: #3498db;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.9rem;
+    }
+
+    .read-more:hover {
+        color: #2980b9;
+    }
+
+    .article-nav {
+        margin: 2rem 0;
+        padding: 1rem 0;
+        border-top: 1px solid #ecf0f1;
+    }
+
+    .nav-link {
+        color: #3498db;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .nav-link:hover {
+        color: #2980b9;
+    }
+
+    @media (max-width: 768px) {
+        .article-content {
+            padding: 1rem;
+        }
+
+        .article-header h1 {
+            font-size: 1.6rem;
+        }
+
+        .related-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const saveBtn = document.querySelector('.save-article-btn');
+        if (saveBtn) {
+            saveBtn.addEventListener('click', function() {
+                const articleId = this.dataset.articleId;
+                const isSaved = this.dataset.isSaved === 'true';
+                
+                // In a real application, this would make an AJAX request
+                // For now, this is just a UI placeholder
+                this.classList.toggle('saved');
+                this.dataset.isSaved = (!isSaved).toString();
+                this.querySelector('.save-icon').textContent = isSaved ? '☆' : '★';
+                this.querySelector('.save-text').textContent = isSaved ? 'Save Article' : 'Saved';
+            });
+        }
+    });
+</script>
+{% endblock %}

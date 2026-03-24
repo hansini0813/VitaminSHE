@@ -1,0 +1,454 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Educational Resources - VitaminSHE{% endblock %}
+
+{% block content %}
+<div class="resources-page">
+    <div class="page-header">
+        <h1>Educational Resources</h1>
+        <p class="subtitle">Learn about vitamins, nutrition, and health from trusted sources</p>
+    </div>
+
+    <!-- Medical Disclaimer -->
+    <div class="medical-disclaimer">
+        <div class="disclaimer-icon">ⓘ</div>
+        <div class="disclaimer-content">
+            <strong>Medical Disclaimer:</strong> The information provided on VitaminSHE is for educational purposes only and should not be considered medical advice. Always consult with a qualified healthcare professional before making any dietary changes or starting vitamin supplements. We are not liable for any health consequences resulting from the use of information on this site.
+        </div>
+    </div>
+
+    <div class="resources-container">
+        <!-- Sidebar with Filters -->
+        <aside class="resources-sidebar">
+            <div class="filter-section">
+                <h3>Filter by Category</h3>
+                <nav class="category-filters">
+                    <a href="{% url 'resources:list' %}" 
+                       class="filter-tag {% if not selected_category %}active{% endif %}">
+                        All Categories
+                    </a>
+                    {% for category in categories %}
+                        <a href="{% url 'resources:list' %}?category={{ category.slug }}"
+                           class="filter-tag {% if selected_category.slug == category.slug %}active{% endif %}">
+                            {{ category.name }}
+                        </a>
+                    {% endfor %}
+                </nav>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="resources-main">
+            <!-- Featured Highlight -->
+            {% if featured_articles %}
+                <section class="featured-section">
+                    <h2>Featured Resources</h2>
+                    <div class="featured-grid">
+                        {% for article in featured_articles|slice:":3" %}
+                            <div class="featured-card">
+                                <div class="featured-badge">Featured</div>
+                                <div class="featured-header">
+                                    <span class="category-badge">{{ article.category.name }}</span>
+                                </div>
+                                <h3>{{ article.title }}</h3>
+                                <p class="summary">{{ article.summary }}</p>
+                                <a href="{% url 'resources:detail' article.slug %}" class="read-more-btn">
+                                    Read Article →
+                                </a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </section>
+            {% endif %}
+
+            <!-- Articles Grid -->
+            <section class="articles-section">
+                <h2>{% if selected_category %}{{ selected_category.name }}{% else %}All Articles{% endif %}</h2>
+                
+                {% if articles %}
+                    <div class="articles-grid">
+                        {% for article in articles %}
+                            <article class="article-card">
+                                <div class="article-header">
+                                    <span class="category-badge">{{ article.category.name }}</span>
+                                    <span class="published-date">{{ article.published_at|date:"M d, Y" }}</span>
+                                </div>
+                                <h3>
+                                    <a href="{% url 'resources:detail' article.slug %}">
+                                        {{ article.title }}
+                                    </a>
+                                </h3>
+                                <p class="summary">{{ article.summary }}</p>
+                                <a href="{% url 'resources:detail' article.slug %}" class="read-more-link">
+                                    Read Article →
+                                </a>
+                            </article>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Pagination -->
+                    {% if is_paginated %}
+                        <div class="pagination">
+                            <div class="pagination-info">
+                                Showing page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                            </div>
+                            <nav class="pagination-nav">
+                                {% if page_obj.has_previous %}
+                                    <a href="?page=1{% if selected_category %}&category={{ selected_category.slug }}{% endif %}" class="page-link">First</a>
+                                    <a href="?page={{ page_obj.previous_page_number }}{% if selected_category %}&category={{ selected_category.slug }}{% endif %}" class="page-link">Previous</a>
+                                {% endif %}
+
+                                <span class="page-info">
+                                    {% include "partials/pagination_items.html" %}
+                                </span>
+
+                                {% if page_obj.has_next %}
+                                    <a href="?page={{ page_obj.next_page_number }}{% if selected_category %}&category={{ selected_category.slug }}{% endif %}" class="page-link">Next</a>
+                                    <a href="?page={{ page_obj.paginator.num_pages }}{% if selected_category %}&category={{ selected_category.slug }}{% endif %}" class="page-link">Last</a>
+                                {% endif %}
+                            </nav>
+                        </div>
+                    {% endif %}
+                {% else %}
+                    <div class="empty-state">
+                        <p>No articles found in this category yet.</p>
+                        <a href="{% url 'resources:list' %}" class="btn-primary">View All Articles</a>
+                    </div>
+                {% endif %}
+            </section>
+        </main>
+    </div>
+</div>
+
+<style>
+    .resources-page {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+    }
+
+    .page-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .page-header h1 {
+        font-size: 2.5rem;
+        color: #2c3e50;
+        margin-bottom: 0.5rem;
+    }
+
+    .subtitle {
+        font-size: 1.1rem;
+        color: #7f8c8d;
+    }
+
+    .medical-disclaimer {
+        display: flex;
+        gap: 1rem;
+        background: #e8f4f8;
+        border-left: 4px solid #3498db;
+        padding: 1rem;
+        border-radius: 4px;
+        margin-bottom: 2rem;
+        font-size: 0.95rem;
+    }
+
+    .disclaimer-icon {
+        font-size: 1.5rem;
+        color: #3498db;
+        flex-shrink: 0;
+    }
+
+    .disclaimer-content {
+        color: #34495e;
+        line-height: 1.6;
+    }
+
+    .resources-container {
+        display: flex;
+        gap: 2rem;
+    }
+
+    .resources-sidebar {
+        flex: 0 0 250px;
+    }
+
+    .resources-main {
+        flex: 1;
+    }
+
+    .filter-section h3 {
+        font-size: 1.1rem;
+        margin-bottom: 1rem;
+        color: #2c3e50;
+    }
+
+    .category-filters {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .filter-tag {
+        display: block;
+        padding: 0.75rem 1rem;
+        background: #ecf0f1;
+        border-radius: 4px;
+        text-decoration: none;
+        color: #2c3e50;
+        transition: all 0.3s ease;
+        border-left: 3px solid transparent;
+    }
+
+    .filter-tag:hover {
+        background: #d5dbdb;
+    }
+
+    .filter-tag.active {
+        background: #3498db;
+        color: white;
+        border-left-color: #2980b9;
+    }
+
+    .featured-section {
+        margin-bottom: 3rem;
+    }
+
+    .featured-section h2 {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+        color: #2c3e50;
+    }
+
+    .featured-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 3rem;
+    }
+
+    .featured-card {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 2rem;
+        border-radius: 8px;
+        position: relative;
+        overflow: hidden;
+        min-height: 300px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .featured-badge {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: rgba(255, 255, 255, 0.3);
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
+
+    .featured-card h3 {
+        font-size: 1.5rem;
+        margin: 1rem 0;
+        flex-grow: 1;
+    }
+
+    .featured-card .summary {
+        margin-bottom: 1rem;
+        line-height: 1.6;
+    }
+
+    .read-more-btn {
+        display: inline-block;
+        background: white;
+        color: #667eea;
+        padding: 0.75rem 1.5rem;
+        border-radius: 4px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: transform 0.2s ease;
+        align-self: flex-start;
+    }
+
+    .read-more-btn:hover {
+        transform: translateX(4px);
+    }
+
+    .articles-section h2 {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+        color: #2c3e50;
+    }
+
+    .articles-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .article-card {
+        background: white;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 1.5rem;
+        transition: all 0.3s ease;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .article-card:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        transform: translateY(-2px);
+    }
+
+    .article-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+        gap: 1rem;
+    }
+
+    .category-badge {
+        display: inline-block;
+        background: #3498db;
+        color: white;
+        padding: 0.4rem 0.8rem;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
+
+    .published-date {
+        color: #7f8c8d;
+        font-size: 0.9rem;
+        white-space: nowrap;
+    }
+
+    .article-card h3 {
+        font-size: 1.2rem;
+        margin: 0.5rem 0;
+        line-height: 1.4;
+    }
+
+    .article-card h3 a {
+        text-decoration: none;
+        color: #2c3e50;
+    }
+
+    .article-card h3 a:hover {
+        color: #3498db;
+    }
+
+    .summary {
+        color: #7f8c8d;
+        font-size: 0.95rem;
+        line-height: 1.6;
+        margin: 1rem 0;
+        flex-grow: 1;
+    }
+
+    .read-more-link {
+        color: #3498db;
+        text-decoration: none;
+        font-weight: 600;
+        align-self: flex-start;
+    }
+
+    .read-more-link:hover {
+        color: #2980b9;
+    }
+
+    .pagination {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        margin-top: 2rem;
+        padding: 2rem;
+        background: #f8f9fa;
+        border-radius: 8px;
+    }
+
+    .pagination-nav {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+    }
+
+    .page-link {
+        padding: 0.5rem 1rem;
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        text-decoration: none;
+        color: #3498db;
+        transition: all 0.3s ease;
+    }
+
+    .page-link:hover {
+        background: #3498db;
+        color: white;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 3rem 1rem;
+    }
+
+    .empty-state p {
+        color: #7f8c8d;
+        font-size: 1.1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .btn-primary {
+        display: inline-block;
+        background: #3498db;
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border-radius: 4px;
+        text-decoration: none;
+        transition: background 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        background: #2980b9;
+    }
+
+    @media (max-width: 768px) {
+        .resources-container {
+            flex-direction: column;
+        }
+
+        .resources-sidebar {
+            flex: 1;
+        }
+
+        .category-filters {
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
+
+        .filter-tag {
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .page-header h1 {
+            font-size: 1.8rem;
+        }
+
+        .featured-grid,
+        .articles-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,503 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Clinic Locator - VitaminSHE{% endblock %}
+
+{% block content %}
+<div class="locator-page">
+    <div class="page-header">
+        <h1>Find Nearby Blood Test & Diagnostic Centers</h1>
+        <p class="subtitle">Locate clinics and medical facilities in your area</p>
+    </div>
+
+    <!-- Search Panel -->
+    <div class="search-panel">
+        <div class="search-controls">
+            <div class="search-input-group">
+                <input 
+                    type="text" 
+                    id="searchQuery" 
+                    placeholder="Enter search term: clinic, blood test, phlebotomy, lab, etc."
+                    class="search-input"
+                    value="clinic"
+                >
+                <button id="searchBtn" class="btn-search">Search</button>
+            </div>
+
+            <div class="filter-group">
+                <label for="radiusSelect">Search Radius:</label>
+                <select id="radiusSelect" class="radius-select">
+                    <option value="2000">2 km</option>
+                    <option value="5000" selected>5 km (default)</option>
+                    <option value="10000">10 km</option>
+                </select>
+            </div>
+
+            <div class="location-buttons">
+                <button id="currentLocationBtn" class="btn-location">
+                    📍 Use Current Location
+                </button>
+                <button id="savedClinicsBtn" class="btn-saved">
+                    ⭐ View Saved Clinics
+                </button>
+            </div>
+        </div>
+
+        <div class="status-messages">
+            <div id="loadingMessage" class="message message-loading" style="display: none;">
+                <span class="spinner"></span> Searching for nearby clinics...
+            </div>
+            <div id="errorMessage" class="message message-error" style="display: none;"></div>
+            <div id="successMessage" class="message message-success" style="display: none;"></div>
+        </div>
+    </div>
+
+    <!-- Map and Results Container -->
+    <div class="locator-container">
+        <!-- Map -->
+        <div class="map-container">
+            <div id="map"></div>
+            <div id="geoErrorMessage" class="geo-error" style="display: none;">
+                <p><strong>Geolocation Permission Denied</strong></p>
+                <p>Please enable location services to find nearby clinics.</p>
+                <p>Alternatively, search manually using the address input.</p>
+            </div>
+        </div>
+
+        <!-- Results Sidebar -->
+        <aside class="results-sidebar">
+            <div class="results-header">
+                <h2>Results</h2>
+                <span id="resultCount" class="result-count">0 clinics found</span>
+            </div>
+
+            <div id="resultsList" class="results-list">
+                <p class="placeholder">Search to find nearby clinics</p>
+            </div>
+        </aside>
+    </div>
+</div>
+
+<!-- Result Card Template -->
+<template id="resultCardTemplate">
+    <div class="result-card" data-place-id="">
+        <div class="result-card-header">
+            <h3></h3>
+            <div class="result-actions">
+                <button class="save-clinic-btn" title="Save clinic">
+                    <span class="save-icon">☆</span>
+                </button>
+            </div>
+        </div>
+        <p class="result-address"></p>
+        <div class="result-info">
+            <span class="result-distance"></span>
+            <span class="result-rating"></span>
+        </div>
+        <p class="result-phone" style="display: none;">📞 <span></span></p>
+        <p class="result-website" style="display: none;">🌐 <a href="#" target="_blank"></a></p>
+        <a class="result-directions" href="" target="_blank">Get Directions →</a>
+    </div>
+</template>
+
+<style>
+    .locator-page {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        background: #f8f9fa;
+    }
+
+    .page-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 2rem 1rem;
+        text-align: center;
+    }
+
+    .page-header h1 {
+        font-size: 2rem;
+        margin: 0 0 0.5rem 0;
+    }
+
+    .subtitle {
+        font-size: 1.1rem;
+        opacity: 0.9;
+        margin: 0;
+    }
+
+    .search-panel {
+        background: white;
+        padding: 1.5rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    .search-controls {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        align-items: flex-end;
+    }
+
+    .search-input-group {
+        flex: 1;
+        min-width: 250px;
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    .search-input {
+        flex: 1;
+        padding: 0.75rem 1rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 1rem;
+    }
+
+    .search-input:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .btn-search {
+        background: #667eea;
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: background 0.3s ease;
+    }
+
+    .btn-search:hover {
+        background: #5568d3;
+    }
+
+    .filter-group {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+    }
+
+    .filter-group label {
+        font-weight: 600;
+        color: #2c3e50;
+    }
+
+    .radius-select {
+        padding: 0.75rem 1rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .location-buttons {
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    .btn-location,
+    .btn-saved {
+        background: white;
+        border: 1px solid #ddd;
+        padding: 0.75rem 1rem;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        white-space: nowrap;
+    }
+
+    .btn-location:hover {
+        border-color: #667eea;
+        color: #667eea;
+    }
+
+    .btn-saved:hover {
+        border-color: #27ae60;
+        color: #27ae60;
+    }
+
+    .message {
+        padding: 1rem;
+        border-radius: 4px;
+        margin-top: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        max-width: 1200px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .message-loading {
+        background: #e3f2fd;
+        color: #1976d2;
+        border-left: 4px solid #1976d2;
+    }
+
+    .message-error {
+        background: #ffebee;
+        color: #c62828;
+        border-left: 4px solid #c62828;
+    }
+
+    .message-success {
+        background: #e8f5e9;
+        color: #2e7d32;
+        border-left: 4px solid #2e7d32;
+    }
+
+    .spinner {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        border: 2px solid currentColor;
+        border-right-color: transparent;
+        border-radius: 50%;
+        animation: spin 0.6s linear infinite;
+    }
+
+    @keyframes spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    .status-messages {
+        max-width: 1200px;
+        margin: 0 auto;
+        width: 100%;
+    }
+
+    .locator-container {
+        display: flex;
+        flex: 1;
+        max-width: 1400px;
+        margin: 0 auto;
+        width: 100%;
+        gap: 1rem;
+        padding: 1rem;
+    }
+
+    .map-container {
+        flex: 1;
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        position: relative;
+        min-height: 500px;
+    }
+
+    #map {
+        width: 100%;
+        height: 100%;
+    }
+
+    .geo-error {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        text-align: center;
+        max-width: 300px;
+    }
+
+    .geo-error p {
+        margin: 0.5rem 0;
+        color: #666;
+    }
+
+    .results-sidebar {
+        flex: 0 0 350px;
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+    }
+
+    .results-header {
+        padding: 1.5rem;
+        border-bottom: 1px solid #e0e0e0;
+        background: #f8f9fa;
+    }
+
+    .results-header h2 {
+        margin: 0 0 0.5rem 0;
+        font-size: 1.3rem;
+        color: #2c3e50;
+    }
+
+    .result-count {
+        font-size: 0.9rem;
+        color: #7f8c8d;
+    }
+
+    .results-list {
+        flex: 1;
+        overflow-y: auto;
+        padding: 0;
+    }
+
+    .placeholder {
+        padding: 2rem 1.5rem;
+        text-align: center;
+        color: #7f8c8d;
+    }
+
+    .result-card {
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid #e0e0e0;
+        cursor: pointer;
+        transition: background 0.2s ease;
+    }
+
+    .result-card:hover {
+        background: #f8f9fa;
+    }
+
+    .result-card:last-child {
+        border-bottom: none;
+    }
+
+    .result-card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 1rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .result-card h3 {
+        margin: 0;
+        font-size: 1rem;
+        color: #2c3e50;
+    }
+
+    .result-actions {
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    .save-clinic-btn {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        padding: 0;
+        transition: transform 0.2s ease;
+    }
+
+    .save-clinic-btn:hover {
+        transform: scale(1.2);
+    }
+
+    .save-clinic-btn.saved {
+        color: #f39c12;
+    }
+
+    .result-address {
+        margin: 0.5rem 0;
+        font-size: 0.9rem;
+        color: #7f8c8d;
+    }
+
+    .result-info {
+        display: flex;
+        gap: 1rem;
+        font-size: 0.85rem;
+        margin: 0.5rem 0;
+    }
+
+    .result-distance {
+        color: #667eea;
+        font-weight: 600;
+    }
+
+    .result-rating {
+        color: #f39c12;
+    }
+
+    .result-phone,
+    .result-website {
+        margin: 0.5rem 0;
+        font-size: 0.9rem;
+    }
+
+    .result-website a {
+        color: #667eea;
+        text-decoration: none;
+    }
+
+    .result-website a:hover {
+        text-decoration: underline;
+    }
+
+    .result-directions {
+        display: inline-block;
+        color: #667eea;
+        text-decoration: none;
+        font-size: 0.9rem;
+        margin-top: 0.5rem;
+    }
+
+    .result-directions:hover {
+        text-decoration: underline;
+    }
+
+    @media (max-width: 1024px) {
+        .locator-container {
+            flex-direction: column;
+        }
+
+        .results-sidebar {
+            flex: 0 0 auto;
+            max-height: 400px;
+        }
+
+        .search-controls {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .search-input-group,
+        .filter-group,
+        .location-buttons {
+            width: 100%;
+        }
+
+        .location-buttons {
+            flex-direction: column;
+        }
+    }
+
+    @media (max-width: 720px) {
+        .page-header h1 {
+            font-size: 1.5rem;
+        }
+
+        .search-panel {
+            padding: 1rem;
+        }
+
+        .result-card {
+            padding: 1rem;
+        }
+    }
+</style>
+
+<script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&libraries=places"></script>
+<script src="{% static 'js/locator.js' %}"></script>
+{% endblock %}

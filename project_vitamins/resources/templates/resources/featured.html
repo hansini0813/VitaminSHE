@@ -1,0 +1,294 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Featured Resources - VitaminSHE{% endblock %}
+
+{% block content %}
+<div class="featured-resources">
+    <div class="page-header">
+        <h1>Featured Resources</h1>
+        <p class="subtitle">Explore curated articles about vitamins and nutrition</p>
+    </div>
+
+    <!-- Medical Disclaimer -->
+    <div class="medical-disclaimer">
+        <div class="disclaimer-icon">ⓘ</div>
+        <div class="disclaimer-content">
+            <strong>Medical Disclaimer:</strong> The resources on VitaminSHE are for educational purposes only. Always consult a qualified healthcare professional before making dietary changes or taking supplements.
+        </div>
+    </div>
+
+    <!-- Category Grid with Article Counts -->
+    <section class="categories-grid-section">
+        <h2>Browse by Category</h2>
+        <div class="categories-grid">
+            {% for category in categories %}
+                <div class="category-block">
+                    <a href="{% url 'resources:list' %}?category={{ category.slug }}" class="category-link">
+                        <div class="category-icon">📚</div>
+                        <h3>{{ category.name }}</h3>
+                        <p class="article-count">{{ category.article_count }} article{{ category.article_count|pluralize }}</p>
+                    </a>
+                </div>
+            {% empty %}
+                <p class="no-categories">No categories available yet.</p>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- Featured Articles -->
+    {% if featured_articles %}
+        <section class="featured-articles-section">
+            <h2>Latest Resources</h2>
+            <div class="featured-articles-grid">
+                {% for article in featured_articles %}
+                    <article class="featured-article-block">
+                        <div class="article-badge">
+                            <span class="category">{{ article.category.name }}</span>
+                        </div>
+                        <h3>
+                            <a href="{% url 'resources:detail' article.slug %}">
+                                {{ article.title }}
+                            </a>
+                        </h3>
+                        <p class="article-meta">
+                            <span class="date">{{ article.published_at|date:"M d, Y" }}</span>
+                        </p>
+                        <p class="description">{{ article.summary }}</p>
+                        <a href="{% url 'resources:detail' article.slug %}" class="read-btn">
+                            Read Full Article →
+                        </a>
+                    </article>
+                {% endfor %}
+            </div>
+            
+            <div class="view-all-btn-container">
+                <a href="{% url 'resources:list' %}" class="view-all-btn">
+                    View All Resources →
+                </a>
+            </div>
+        </section>
+    {% endif %}
+</div>
+
+<style>
+    .featured-resources {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+    }
+
+    .page-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .page-header h1 {
+        font-size: 2.5rem;
+        color: #2c3e50;
+        margin-bottom: 0.5rem;
+    }
+
+    .subtitle {
+        font-size: 1.1rem;
+        color: #7f8c8d;
+    }
+
+    .medical-disclaimer {
+        display: flex;
+        gap: 1rem;
+        background: #e8f4f8;
+        border-left: 4px solid #3498db;
+        padding: 1rem;
+        border-radius: 4px;
+        margin-bottom: 3rem;
+        font-size: 0.95rem;
+    }
+
+    .disclaimer-icon {
+        font-size: 1.5rem;
+        color: #3498db;
+        flex-shrink: 0;
+    }
+
+    .disclaimer-content {
+        color: #34495e;
+        line-height: 1.6;
+    }
+
+    .categories-grid-section h2,
+    .featured-articles-section h2 {
+        font-size: 1.8rem;
+        color: #2c3e50;
+        margin-bottom: 2rem;
+    }
+
+    .categories-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 3rem;
+    }
+
+    .category-block {
+        background: white;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+
+    .category-block:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        transform: translateY(-4px);
+    }
+
+    .category-link {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 2rem 1.5rem;
+        text-decoration: none;
+        color: #2c3e50;
+    }
+
+    .category-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+    }
+
+    .category-link h3 {
+        font-size: 1.2rem;
+        margin: 0 0 0.5rem 0;
+        text-align: center;
+    }
+
+    .article-count {
+        font-size: 0.9rem;
+        color: #7f8c8d;
+        margin: 0;
+    }
+
+    .featured-articles-section {
+        margin-top: 3rem;
+    }
+
+    .featured-articles-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .featured-article-block {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        padding: 2rem;
+        border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .article-badge {
+        margin-bottom: 1rem;
+    }
+
+    .article-badge .category {
+        display: inline-block;
+        background: #3498db;
+        color: white;
+        padding: 0.4rem 0.8rem;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
+
+    .featured-article-block h3 {
+        font-size: 1.3rem;
+        margin: 0.5rem 0;
+        line-height: 1.4;
+    }
+
+    .featured-article-block h3 a {
+        color: #2c3e50;
+        text-decoration: none;
+    }
+
+    .featured-article-block h3 a:hover {
+        color: #3498db;
+    }
+
+    .article-meta {
+        color: #7f8c8d;
+        font-size: 0.9rem;
+        margin: 0.5rem 0 1rem 0;
+    }
+
+    .description {
+        color: #34495e;
+        line-height: 1.6;
+        flex-grow: 1;
+        margin-bottom: 1rem;
+    }
+
+    .read-btn {
+        display: inline-block;
+        background: #3498db;
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border-radius: 4px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        align-self: flex-start;
+    }
+
+    .read-btn:hover {
+        background: #2980b9;
+        transform: translateX(4px);
+    }
+
+    .no-categories {
+        grid-column: 1 / -1;
+        text-align: center;
+        color: #7f8c8d;
+        padding: 2rem;
+    }
+
+    .view-all-btn-container {
+        text-align: center;
+        margin-top: 2rem;
+    }
+
+    .view-all-btn {
+        display: inline-block;
+        background: #27ae60;
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: 4px;
+        text-decoration: none;
+        font-size: 1.1rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .view-all-btn:hover {
+        background: #229954;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    @media (max-width: 768px) {
+        .page-header h1 {
+            font-size: 1.8rem;
+        }
+
+        .categories-grid {
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        }
+
+        .featured-articles-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}

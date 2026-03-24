@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Delete Log | VitaminSHE{% endblock %}
+
+{% block content %}
+<section class="auth-wrap">
+    <h2>Delete Vitamin Log</h2>
+    <p class="muted">This action cannot be undone.</p>
+
+    <div class="card form-card">
+        <p>
+            <strong>{{ object.get_vitamin_type_display }}</strong>
+            on <strong>{{ object.logged_for }}</strong>
+            ({{ object.amount }} {{ object.get_unit_display }})
+        </p>
+        <form method="post" class="action-row">
+            {% csrf_token %}
+            <button type="submit" class="btn-danger">Delete entry</button>
+            <a href="{% url 'tracking:index' %}" class="link-button">Cancel</a>
+        </form>
+    </div>
+</section>
+{% endblock %}

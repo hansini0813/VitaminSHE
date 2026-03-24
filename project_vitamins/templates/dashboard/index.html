@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard | VitaminSHE{% endblock %}
+
+{% block content %}
+<section class="dashboard-grid">
+    <article class="card panel">
+        <h2>Profile Summary</h2>
+        <ul class="summary-list">
+            <li><strong>Onboarding:</strong> {{ profile.get_onboarding_status_display }}</li>
+            <li><strong>Diet:</strong> {{ profile.dietary_preferences|default:"Not set" }}</li>
+            <li><strong>Pregnant:</strong> {{ profile.is_pregnant|yesno:"Yes,No" }}</li>
+            <li><strong>Breastfeeding:</strong> {{ profile.is_breastfeeding|yesno:"Yes,No" }}</li>
+            <li><strong>Water Goal:</strong> {{ profile.daily_water_goal_ml }} ml/day</li>
+        </ul>
+    </article>
+
+    <article class="card panel">
+        <h2>Adherence Stats</h2>
+        <div class="stats-grid">
+            <div><span class="stat">{{ stats.adherence_7 }}%</span><small>7-day adherence</small></div>
+            <div><span class="stat">{{ stats.adherence_30 }}%</span><small>30-day adherence</small></div>
+            <div><span class="stat">{{ stats.days_logged_7 }}</span><small>Days logged (7d)</small></div>
+            <div><span class="stat">{{ stats.current_streak_days }}</span><small>Current streak</small></div>
+            <div><span class="stat">{{ stats.total_logs }}</span><small>Total entries (30d)</small></div>
+        </div>
+    </article>
+</section>
+
+<section class="section">
+    <h3>Recommendation Cards</h3>
+    <div class="card-grid">
+        {% for card in recommendation_cards %}
+            <article class="card rec-card">
+                <h4>{{ card.title|default:card.vitamin_name }}</h4>
+                <p>{{ card.description|default:card.reason }}</p>
+                {% if card.food_sources %}
+                    <p><strong>Foods:</strong> {{ card.food_sources|join:", " }}</p>
+                {% endif %}
+                {% if card.suggested_frequency %}
+                    <p><strong>Frequency:</strong> {{ card.suggested_frequency }}</p>
+                {% endif %}
+                {% if card.priority_label %}
+                    <span class="pill {{ card.priority_label }}">{{ card.priority_label|title }}</span>
+                {% endif %}
+            </article>
+        {% empty %}
+            <p class="muted">No recommendations yet.</p>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="section">
+    <h3>Recent Vitamin Logs</h3>
+    <div class="card table-wrap">
+        <table class="logs-table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Vitamin</th>
+                    <th>Amount</th>
+                    <th>Source</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in recent_logs %}
+                    <tr>
+                        <td>{{ log.logged_for }}</td>
+                        <td>{{ log.get_vitamin_type_display }}</td>
+                        <td>{{ log.amount }} {{ log.get_unit_display }}</td>
+                        <td>{{ log.get_intake_source_display }}</td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="4" class="muted">No logs yet. Add your first vitamin entry.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

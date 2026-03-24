@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Login | VitaminSHE{% endblock %}
+
+{% block content %}
+<section class="auth-wrap">
+    <h2>Welcome back</h2>
+    <p>Log in to continue tracking and recommendations.</p>
+    <form method="post" class="card form-card">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        {% for field in form %}
+            <div class="form-row">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {{ field.errors }}
+            </div>
+        {% endfor %}
+        <button type="submit" class="btn-primary">Login</button>
+    </form>
+    <p class="muted">New here? <a href="{% url 'accounts:signup' %}">Create an account</a></p>
+</section>
+{% endblock %}

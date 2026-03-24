@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}Vitamin Tracking | VitaminSHE{% endblock %}
+
+{% block content %}
+<section class="section tracking-head">
+    <div>
+        <h2>Vitamin Tracking</h2>
+        <p class="muted">Review, edit, and maintain your intake history.</p>
+    </div>
+    <a href="{% url 'tracking:create' %}" class="btn-primary">Add Log Entry</a>
+</section>
+
+<section class="dashboard-grid">
+    <article class="card panel">
+        <h3>Adherence</h3>
+        <div class="stats-grid">
+            <div><span class="stat">{{ summary.adherence_7 }}%</span><small>7-day</small></div>
+            <div><span class="stat">{{ summary.adherence_30 }}%</span><small>30-day</small></div>
+            <div><span class="stat">{{ summary.days_logged_30 }}</span><small>Days logged (30d)</small></div>
+            <div><span class="stat">{{ summary.current_streak_days }}</span><small>Current streak</small></div>
+        </div>
+    </article>
+</section>
+
+<section class="section">
+    <div class="card table-wrap">
+        <table class="logs-table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Vitamin</th>
+                    <th>Amount</th>
+                    <th>Source</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in logs %}
+                    <tr>
+                        <td>{{ log.logged_for }}</td>
+                        <td>{{ log.get_vitamin_type_display }}</td>
+                        <td>{{ log.amount }} {{ log.get_unit_display }}</td>
+                        <td>{{ log.get_intake_source_display }}</td>
+                        <td>
+                            <a href="{% url 'tracking:edit' log.pk %}" class="link-button">Edit</a>
+                            <a href="{% url 'tracking:delete' log.pk %}" class="link-button danger">Delete</a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="5" class="muted">No logs yet. Start by adding your first entry.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {% if is_paginated %}
+        <div class="pagination-row">
+            {% if page_obj.has_previous %}
+                <a class="link-button" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+            {% endif %}
+            <span class="muted">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+            {% if page_obj.has_next %}
+                <a class="link-button" href="?page={{ page_obj.next_page_number }}">Next</a>
+            {% endif %}
+        </div>
+    {% endif %}
+</section>
+{% endblock %}

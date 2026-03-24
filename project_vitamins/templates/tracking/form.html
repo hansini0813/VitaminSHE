@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}{% if form_mode == 'edit' %}Edit Log{% else %}Add Log{% endif %} | VitaminSHE{% endblock %}
+
+{% block content %}
+<section class="auth-wrap">
+    <h2>{% if form_mode == 'edit' %}Edit Vitamin Log{% else %}Add Vitamin Log{% endif %}</h2>
+    <p class="muted">Keep entries accurate to improve your recommendations.</p>
+
+    <form method="post" class="card form-card">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        {% for field in form %}
+            <div class="form-row">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {{ field.errors }}
+            </div>
+        {% endfor %}
+        <div class="action-row">
+            <button type="submit" class="btn-primary">Save</button>
+            <a href="{% url 'tracking:index' %}" class="link-button">Cancel</a>
+        </div>
+    </form>
+</section>
+{% endblock %}

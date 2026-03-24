@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Home | VitaminSHE{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <p class="kicker">Welcome</p>
+    <h2>Track vitamins, monitor adherence, and get smarter recommendations.</h2>
+    <p>
+        Create an account to unlock onboarding, profile-based recommendation cards,
+        and your personalized health dashboard.
+    </p>
+    <p>
+        <a href="{% url 'accounts:signup' %}" class="btn-primary">Get started</a>
+    </p>
+</section>
+{% endblock %}
