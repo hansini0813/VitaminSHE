@@ -42,7 +42,7 @@ class User:
         self.user_calcium = f_calcium[self.age_range]
         self.user_iron = f_iron[self.age_range]
         self.user_magnesium = f_magnesium[self.age_range]
-        self.uesr_potassium = f_potassium[self.age_range]
+        self.user_potassium = f_potassium[self.age_range]
         self.user_zinc = f_zinc[self.age_range]
         
     
@@ -75,31 +75,31 @@ class User:
             
         else:
             # Checks if user is in the age range of 1 to 3
-            if self.age < 0 & self.age >= 3:
+            if self.age >= 1 and self.age <= 3:
                 self.age_range = "1-3"
         
             # Checks if user is in the age range of 4 to 8
-            if self.age >= 4 & self.age <= 8:
+            if self.age >= 4 and self.age <= 8:
                 self.age_range = "4-8"
         
             # Checks if user is in the age range of 9 to 13
-            if self.age >= 9 & self.age <= 13:
+            if self.age >= 9 and self.age <= 13:
                 self.age_range = "9-13"
         
             # Checks if user is in the age range of 14 to 18
-            if self.age >= 14 & self.age <= 18:
+            if self.age >= 14 and self.age <= 18:
                 self.age_range = "14-18"
 
             # Checks if user is in the age range of 19 to 30
-            if self.age >= 19 & self.age <= 30:
+            if self.age >= 19 and self.age <= 30:
                 self.age_range = "19-30"
         
             # Checks if user is in the age range of 31 to 50
-            if self.age >= 31 & self.age <= 50:
+            if self.age >= 31 and self.age <= 50:
                 self.age_range = "31-50"
         
             # Checks if user is in the age range of 51 to 70
-            if self.age >= 51 & self.age <= 70:
+            if self.age >= 51 and self.age <= 70:
                 self.age_range = "51-70"
         
             # Checks if user is in the age range of 71+
@@ -140,7 +140,7 @@ class User:
         return status.format(name=self.name, age=self.age, age_range=self.age_range, height=self.height, weight=self.weight, pregnancy_status=self.pregnancy_status, 
         breastfeeding_status=self.breastfeeding_status, user_vitamin_a=self.user_vitamin_a,
         user_vitamin_b_6=self.user_vitamin_b_6, user_vitamin_b_12=self.user_vitamin_b_12, user_vitamin_c=self.user_vitamin_c, user_vitamin_d=self.user_vitamin_d, user_vitamin_e=self.user_vitamin_e,
-        user_calcium=self.user_calcium, user_iron=self.user_iron, user_magnesium=self.user_magnesium, user_potassium=self.uesr_potassium, user_zinc=self.user_zinc)
+        user_calcium=self.user_calcium, user_iron=self.user_iron, user_magnesium=self.user_magnesium, user_potassium=self.user_potassium, user_zinc=self.user_zinc)
         
 
 # Asks survey questions and calls on functions that will narrow down data and deficencies
@@ -155,7 +155,7 @@ def main():
     # Checks if user_age is a valid input
     while user_age <= 0:
         print("Invalid Entry.")
-        user_age = int(input("What is your name? "))
+        user_age = int(input("How old are you? "))
 
     user_height = input("What is your height (Please round to the nearest whole inch)? ")
     user_weight = input("What is your weight? (Please round to the nearest whole pound)? ")
@@ -175,7 +175,7 @@ def main():
     # Checks if breastfeeding_status is a valid input
     while breastfeeding_status != "Y" and breastfeeding_status != "N":
         print("Invalid Entry.")
-        breastfeeding_status = input("Are you pregnant (Y or N)? ")
+        breastfeeding_status = input("Are you currently breastfeeding (Y or N)? ")
         breastfeeding_status = breastfeeding_status.upper()
 
     user = User(user_name, user_age, user_height, user_weight, pregnancy_status, breastfeeding_status)

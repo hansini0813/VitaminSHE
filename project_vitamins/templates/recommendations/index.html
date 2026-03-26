@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Recommendations | VitaminSHE{% endblock %}
+
+{% block content %}
+<div class="hero">
+    <h1>💊 Personalized Recommendations</h1>
+    <p>Your tailored vitamin and mineral guidance based on your unique profile</p>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin: 2rem 0;">
+    <a href="{% url 'recommendations:dashboard' %}" style="text-decoration: none;">
+        <div class="card" style="padding: 2rem; text-align: center; cursor: pointer; transition: all 0.3s ease; border: 2px solid #e9d5ff;">
+            <div style="font-size: 2.5rem; margin-bottom: 1rem;">📊</div>
+            <h3 style="color: #d946a6; margin: 0 0 0.5rem;">My Dashboard</h3>
+            <p style="color: #666; margin: 0;">View your personalized vitamin recommendations</p>
+        </div>
+    </a>
+
+    <a href="{% url 'recommendations:resources' %}" style="text-decoration: none;">
+        <div class="card" style="padding: 2rem; text-align: center; cursor: pointer; transition: all 0.3s ease; border: 2px solid #e9d5ff;">
+            <div style="font-size: 2.5rem; margin-bottom: 1rem;">📚</div>
+            <h3 style="color: #d946a6; margin: 0 0 0.5rem;">Learn About Vitamins</h3>
+            <p style="color: #666; margin: 0;">Explore educational resources on all vitamins and minerals</p>
+        </div>
+    </a>
+</div>
+{% endblock %}

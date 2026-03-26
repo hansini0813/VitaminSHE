@@ -1,10 +1,12 @@
 :root {
-    --bg: #f3f8f4;
+    --bg: #faf6fb;
     --panel: #ffffff;
-    --ink: #163026;
-    --muted: #56766a;
-    --accent: #1b9f6f;
-    --ring: rgba(27, 159, 111, 0.25);
+    --ink: #3d2e4d;
+    --muted: #8b6f9e;
+    --accent: #d946a6;
+    --accent-light: #ec4899;
+    --purple-light: #c084fc;
+    --ring: rgba(217, 70, 166, 0.15);
 }
 
 * {
@@ -16,8 +18,8 @@ body {
     font-family: "Avenir Next", "Segoe UI", sans-serif;
     color: var(--ink);
     background:
-        radial-gradient(circle at top right, #e4f7ee, transparent 40%),
-        radial-gradient(circle at bottom left, #def1ff, transparent 38%),
+        radial-gradient(circle at top right, #f8e6f7, transparent 40%),
+        radial-gradient(circle at bottom left, #f3e5f5, transparent 38%),
         var(--bg);
 }
 
@@ -28,7 +30,7 @@ body {
 
 .site-header {
     background: var(--panel);
-    border-bottom: 1px solid #dde8e2;
+    border-bottom: 2px solid var(--accent);
     position: sticky;
     top: 0;
     z-index: 10;
@@ -93,7 +95,7 @@ nav a:focus {
     margin: 2.5rem 0;
     padding: clamp(1.25rem, 2vw, 2rem);
     border-radius: 16px;
-    border: 1px solid #dcebe4;
+    border: 2px solid var(--accent);
     box-shadow: 0 10px 30px -22px var(--ring);
 }
 
@@ -116,13 +118,13 @@ nav a:focus {
 .flash-item {
     padding: 0.75rem 1rem;
     border-radius: 10px;
-    background: #eaf6ef;
-    border: 1px solid #cfe9d8;
+    background: #fce7f3;
+    border: 1px solid #fbcfe8;
 }
 
 .flash-item.error {
-    background: #fdecec;
-    border-color: #f3c4c4;
+    background: #fee2e2;
+    border-color: #fecaca;
 }
 
 .auth-wrap {
@@ -132,7 +134,7 @@ nav a:focus {
 
 .card {
     background: var(--panel);
-    border: 1px solid #dcebe4;
+    border: 1px solid #e9d5ff;
     border-radius: 16px;
     box-shadow: 0 10px 30px -22px var(--ring);
 }
@@ -151,7 +153,7 @@ nav a:focus {
 .form-row select,
 .form-row textarea {
     width: 100%;
-    border: 1px solid #bfd5cb;
+    border: 1px solid #d8b4fe;
     border-radius: 10px;
     padding: 0.55rem 0.7rem;
     font: inherit;
@@ -163,7 +165,7 @@ nav a:focus {
 }
 
 .btn-primary {
-    background: linear-gradient(120deg, #167f59, #1aa573);
+    background: linear-gradient(120deg, #d946a6, #ec4899);
     color: #fff;
     border: 0;
     border-radius: 10px;

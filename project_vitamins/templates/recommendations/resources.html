@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Vitamin & Mineral Resources | VitaminSHE{% endblock %}
+
+{% block content %}
+<style>
+    .resources-header {
+        background: linear-gradient(135deg, #d946a6 0%, #c084fc 100%);
+        color: white;
+        padding: 3rem 1rem;
+        border-radius: 16px;
+        margin: 2rem 0;
+        text-align: center;
+    }
+
+    .resources-header h1 {
+        margin: 0 0 0.5rem;
+        font-size: 2.5rem;
+    }
+
+    .resources-header p {
+        margin: 0;
+        font-size: 1.1rem;
+        opacity: 0.95;
+    }
+
+    .category-section {
+        margin: 3rem 0;
+    }
+
+    .category-title {
+        font-size: 1.5rem;
+        color: #d946a6;
+        border-bottom: 3px solid #d946a6;
+        padding-bottom: 0.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .vitamins-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .vitamin-card {
+        background: white;
+        border: 2px solid #e9d5ff;
+        border-radius: 12px;
+        padding: 1.5rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(217, 70, 166, 0.1);
+    }
+
+    .vitamin-card:hover {
+        border-color: #d946a6;
+        box-shadow: 0 8px 24px rgba(217, 70, 166, 0.2);
+        transform: translateY(-4px);
+    }
+
+    .vitamin-card h3 {
+        color: #d946a6;
+        margin: 0 0 0.5rem;
+        font-size: 1.3rem;
+    }
+
+    .vitamin-card p {
+        color: #666;
+        margin: 0.5rem 0;
+        line-height: 1.6;
+    }
+
+    .benefits-list {
+        margin: 1rem 0;
+        list-style: none;
+        padding-left: 0;
+    }
+
+    .benefits-list li {
+        margin: 0.5rem 0;
+        padding-left: 1.5rem;
+        position: relative;
+        font-size: 0.95rem;
+    }
+
+    .benefits-list li:before {
+        content: "✓";
+        position: absolute;
+        left: 0;
+        color: #d946a6;
+        font-weight: bold;
+    }
+
+    .learn-more-btn {
+        display: inline-block;
+        margin-top: 1rem;
+        padding: 0.5rem 1rem;
+        background: linear-gradient(120deg, #d946a6, #ec4899);
+        color: white;
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .learn-more-btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 12px rgba(217, 70, 166, 0.3);
+    }
+
+    .stats {
+        text-align: center;
+        padding: 1rem;
+        background: #fce7f3;
+        border-radius: 8px;
+        margin-bottom: 2rem;
+    }
+
+    .stats-number {
+        font-size: 2rem;
+        color: #d946a6;
+        font-weight: bold;
+    }
+</style>
+
+<div class="resources-header">
+    <h1>💊 Vitamin & Mineral Resources</h1>
+    <p>Learn about essential nutrients for optimal women's health</p>
+</div>
+
+<div class="stats">
+    <div class="stats-number">{{ total_vitamins }}</div>
+    <p>Essential Vitamins & Minerals Covered</p>
+</div>
+
+{% for category, vitamins in categories.items %}
+<div class="category-section">
+    <h2 class="category-title">{{ category }}</h2>
+    <div class="vitamins-grid">
+        {% for vitamin in vitamins %}
+        <div class="vitamin-card">
+            <h3>{{ vitamin.name }}</h3>
+            <p>{{ vitamin.description }}</p>
+            
+            <ul class="benefits-list">
+                {% for benefit in vitamin.benefits %}
+                    <li>{{ benefit }}</li>
+                {% endfor %}
+            </ul>
+            
+            <a href="{% url 'recommendations:vitamin_detail' vitamin.id %}" class="learn-more-btn">
+                Learn More →
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endfor %}
+
+<style>
+    .category-section:last-child {
+        margin-bottom: 3rem;
+    }
+</style>
+{% endblock %}

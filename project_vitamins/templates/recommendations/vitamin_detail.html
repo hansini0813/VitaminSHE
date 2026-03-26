@@ -1,0 +1,223 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ vitamin.name }} | VitaminSHE{% endblock %}
+
+{% block content %}
+<style>
+    .vitamin-detail-header {
+        background: linear-gradient(135deg, #d946a6 0%, #c084fc 100%);
+        color: white;
+        padding: 2rem 1rem;
+        border-radius: 16px;
+        margin: 2rem 0;
+    }
+
+    .vitamin-detail-header h1 {
+        margin: 0 0 0.5rem;
+        font-size: 2rem;
+    }
+
+    .vitamin-category {
+        display: inline-block;
+        background: rgba(255, 255, 255, 0.3);
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        margin: 0.5rem 0;
+    }
+
+    .content-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 2rem;
+        margin: 2rem 0;
+    }
+
+    @media (max-width: 768px) {
+        .content-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .main-content {
+        background: white;
+        padding: 2rem;
+        border-radius: 12px;
+        border: 2px solid #e9d5ff;
+        box-shadow: 0 4px 12px rgba(217, 70, 166, 0.1);
+    }
+
+    .description {
+        font-size: 1.1rem;
+        line-height: 1.8;
+        color: #555;
+        margin-bottom: 2rem;
+    }
+
+    .section-title {
+        color: #d946a6;
+        font-size: 1.3rem;
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+        border-left: 4px solid #d946a6;
+        padding-left: 1rem;
+    }
+
+    .benefits-list {
+        list-style: none;
+        padding-left: 0;
+    }
+
+    .benefits-list li {
+        padding: 0.75rem;
+        margin-bottom: 0.5rem;
+        background: #fce7f3;
+        border-left: 4px solid #d946a6;
+        border-radius: 4px;
+        font-size: 1rem;
+    }
+
+    .sidebar {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .info-box {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 12px;
+        border: 2px solid #e9d5ff;
+        box-shadow: 0 4px 12px rgba(217, 70, 166, 0.1);
+    }
+
+    .info-box-title {
+        color: #d946a6;
+        font-weight: bold;
+        margin-bottom: 1rem;
+        font-size: 1.1rem;
+    }
+
+    .recommendation-value {
+        font-size: 1.8rem;
+        color: #d946a6;
+        font-weight: bold;
+        margin: 0.5rem 0;
+    }
+
+    .recommendation-unit {
+        color: #999;
+        font-size: 0.9rem;
+    }
+
+    .user-status {
+        background: #fce7f3;
+        padding: 1rem;
+        border-radius: 8px;
+        margin-top: 0.5rem;
+        font-size: 0.95rem;
+    }
+
+    .back-link {
+        display: inline-block;
+        margin-bottom: 1.5rem;
+        color: #d946a6;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .back-link:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<a href="{% url 'recommendations:resources' %}" class="back-link">← Back to Resources</a>
+
+<div class="vitamin-detail-header">
+    <h1>{{ vitamin.name }}</h1>
+    <div class="vitamin-category">{{ vitamin.category }}</div>
+</div>
+
+<div class="content-grid">
+    <div class="main-content">
+        <p class="description">{{ vitamin.description }}</p>
+        
+        <h2 class="section-title">✨ Key Benefits</h2>
+        <ul class="benefits-list">
+            {% for benefit in vitamin.benefits %}
+                <li>{{ benefit }}</li>
+            {% endfor %}
+        </ul>
+
+        {% if vitamin.category == "Fat-Soluble Vitamins" %}
+        <div class="info-box" style="margin-top: 2rem; background: #ede9fe;">
+            <div class="info-box-title">💡 Storage Note</div>
+            <p>Fat-soluble vitamins (A, D, E, K) are stored in body fat, so you don't need to consume them daily. However, maintain consistent intake for optimal health.</p>
+        </div>
+        {% elif vitamin.category == "Water-Soluble Vitamins" %}
+        <div class="info-box" style="margin-top: 2rem; background: #ede9fe;">
+            <div class="info-box-title">💡 Daily Intake Required</div>
+            <p>Water-soluble vitamins (B-complex, C) are not stored in the body, so you need regular intake through food or supplements.</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="sidebar">
+        {% if user_requirement %}
+        <div class="info-box">
+            <div class="info-box-title">📋 Your Daily Recommendation</div>
+            <div class="recommendation-value">{{ user_requirement }} <span class="recommendation-unit">mg</span></div>
+            <div class="user-status">
+                <strong>Based on your profile:</strong>
+                <ul style="margin: 0.5rem 0; padding-left: 1.2rem; font-size: 0.9rem;">
+                    <li>Age from your profile</li>
+                    {% if request.user.profile.is_pregnant %}
+                        <li>✓ Pregnancy status</li>
+                    {% endif %}
+                    {% if request.user.profile.is_breastfeeding %}
+                        <li>✓ Breastfeeding status</li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+        {% else %}
+        <div class="info-box">
+            <div class="info-box-title">📋 Personalization</div>
+            <p>Complete your profile with your date of birth to get personalized vitamin recommendations.</p>
+            <a href="{% url 'accounts:profile' %}" class="learn-more-btn" style="display: block; margin-top: 1rem; text-align: center;">
+                Update Profile
+            </a>
+        </div>
+        {% endif %}
+
+        <div class="info-box">
+            <div class="info-box-title">🍎 Food Sources</div>
+            <p>Get {{ vitamin.name }} from a variety of foods as part of a balanced diet. Consult a registered dietitian for personalized nutrition advice.</p>
+        </div>
+
+        <div class="info-box">
+            <div class="info-box-title">⚠️ Before You Supplement</div>
+            <p>While vitamins and minerals are essential, consult a healthcare provider before starting supplements, especially if you're pregnant, breastfeeding, or taking medications.</p>
+        </div>
+    </div>
+</div>
+
+<style>
+    .learn-more-btn {
+        display: inline-block;
+        padding: 0.5rem 1rem;
+        background: linear-gradient(120deg, #d946a6, #ec4899);
+        color: white;
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .learn-more-btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 12px rgba(217, 70, 166, 0.3);
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,271 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}My Vitamin Dashboard | VitaminSHE{% endblock %}
+
+{% block content %}
+<style>
+    .dashboard-header {
+        background: linear-gradient(135deg, #d946a6 0%, #c084fc 100%);
+        color: white;
+        padding: 2rem 1rem;
+        border-radius: 16px;
+        margin: 2rem 0;
+    }
+
+    .dashboard-header h1 {
+        margin: 0 0 1rem;
+        font-size: 2rem;
+    }
+
+    .profile-info {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+
+    .profile-stat {
+        background: rgba(255, 255, 255, 0.2);
+        padding: 1rem;
+        border-radius: 8px;
+    }
+
+    .profile-stat-label {
+        font-size: 0.9rem;
+        opacity: 0.9;
+    }
+
+    .profile-stat-value {
+        font-size: 1.3rem;
+        font-weight: bold;
+        margin-top: 0.25rem;
+    }
+
+    .recommendation-card {
+        background: white;
+        border: 2px solid #e9d5ff;
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+        box-shadow: 0 4px 12px rgba(217, 70, 166, 0.1);
+    }
+
+    .recommendation-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        margin-bottom: 1rem;
+    }
+
+    .vitamin-requirement {
+        color: #d946a6;
+        font-weight: bold;
+    }
+
+    .requirement-value {
+        font-size: 1.5rem;
+        display: block;
+        margin-top: 0.5rem;
+    }
+
+    .requirement-unit {
+        font-size: 0.9rem;
+        color: #999;
+    }
+
+    .nutrition-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 1rem;
+        margin: 2rem 0;
+    }
+
+    .nutrition-item {
+        background: white;
+        border: 2px solid #e9d5ff;
+        border-radius: 12px;
+        padding: 1.5rem;
+        text-align: center;
+        box-shadow: 0 4px 12px rgba(217, 70, 166, 0.1);
+    }
+
+    .nutrition-name {
+        color: #d946a6;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+    }
+
+    .nutrition-value {
+        font-size: 1.8rem;
+        color: #d946a6;
+        font-weight: bold;
+    }
+
+    .nutrition-unit {
+        color: #999;
+        font-size: 0.85rem;
+    }
+
+    .recommendations-section {
+        margin-top: 3rem;
+    }
+
+    .section-title {
+        color: #d946a6;
+        font-size: 1.5rem;
+        border-bottom: 3px solid #d946a6;
+        padding-bottom: 0.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .personalized-recommendation {
+        background: linear-gradient(135deg, #fce7f3 0%, #f3e5f5 100%);
+        border-left: 4px solid #d946a6;
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+        border-radius: 8px;
+    }
+
+    .recommendation-priority {
+        display: inline-block;
+        background: #d946a6;
+        color: white;
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+    }
+
+    .recommendation-priority.high {
+        background: #d946a6;
+    }
+
+    .recommendation-priority.medium {
+        background: #ec4899;
+    }
+
+    .recommendation-priority.low {
+        background: #c084fc;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 2rem;
+        background: white;
+        border: 2px solid #e9d5ff;
+        border-radius: 12px;
+        color: #999;
+    }
+
+    .empty-state-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+    }
+</style>
+
+<div class="dashboard-header">
+    <h1>💊 Your Vitamin Dashboard</h1>
+    <div class="profile-info">
+        {% if age %}
+            <div class="profile-stat">
+                <div class="profile-stat-label">Age</div>
+                <div class="profile-stat-value">{{ age }}</div>
+            </div>
+        {% endif %}
+        
+        {% if age_range %}
+            <div class="profile-stat">
+                <div class="profile-stat-label">Category</div>
+                <div class="profile-stat-value">{{ age_range }}</div>
+            </div>
+        {% endif %}
+
+        {% if profile.is_pregnant %}
+            <div class="profile-stat">
+                <div class="profile-stat-label">Status</div>
+                <div class="profile-stat-value">🤰 Pregnant</div>
+            </div>
+        {% endif %}
+
+        {% if profile.is_breastfeeding %}
+            <div class="profile-stat">
+                <div class="profile-stat-label">Status</div>
+                <div class="profile-stat-value">🍼 Breastfeeding</div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+{% if vitamin_recommendations %}
+<div>
+    <h2 class="section-title">📊 Daily Vitamin & Mineral Requirements</h2>
+    <div class="nutrition-grid">
+        {% for vitamin_id, requirement in vitamin_recommendations.items %}
+            {% if requirement %}
+                <div class="nutrition-item">
+                    <div class="nutrition-name">
+                        {% if vitamin_id == "vitamin_a" %}Vitamin A{% endif %}
+                        {% if vitamin_id == "vitamin_b6" %}Vitamin B6{% endif %}
+                        {% if vitamin_id == "vitamin_b12" %}Vitamin B12{% endif %}
+                        {% if vitamin_id == "vitamin_c" %}Vitamin C{% endif %}
+                        {% if vitamin_id == "vitamin_d" %}Vitamin D{% endif %}
+                        {% if vitamin_id == "vitamin_e" %}Vitamin E{% endif %}
+                        {% if vitamin_id == "vitamin_k" %}Vitamin K{% endif %}
+                        {% if vitamin_id == "calcium" %}Calcium{% endif %}
+                        {% if vitamin_id == "iron" %}Iron{% endif %}
+                        {% if vitamin_id == "magnesium" %}Magnesium{% endif %}
+                        {% if vitamin_id == "potassium" %}Potassium{% endif %}
+                        {% if vitamin_id == "zinc" %}Zinc{% endif %}
+                    </div>
+                    <a href="{% url 'recommendations:vitamin_detail' vitamin_id %}" style="text-decoration: none;">
+                        <div class="nutrition-value">{{ requirement }}</div>
+                        <div class="nutrition-unit">mg/day</div>
+                    </a>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+{% else %}
+<div class="empty-state">
+    <div class="empty-state-icon">📅</div>
+    <p>Complete your profile with your date of birth to view personalized recommendations.</p>
+    <a href="{% url 'accounts:profile' %}" class="btn-primary" style="margin-top: 1rem;">Update My Profile</a>
+</div>
+{% endif %}
+
+{% if personalized_recommendations %}
+<div class="recommendations-section">
+    <h2 class="section-title">✨ Personalized Recommendations</h2>
+    {% for rec in personalized_recommendations %}
+        <div class="personalized-recommendation">
+            <span class="recommendation-priority {{ rec.priority_label }}">{{ rec.priority_label|upper }}</span>
+            <h3 style="margin: 0.5rem 0 0; color: #3d2e4d;">{{ rec.vitamin_name }}</h3>
+            <p style="margin: 0.5rem 0; color: #666; font-size: 0.95rem;"><strong>Why:</strong> {{ rec.reason }}</p>
+            
+            {% if rec.food_sources %}
+            <p style="margin: 0.5rem 0; font-size: 0.95rem;">
+                <strong>🍎 Food sources:</strong> {{ rec.food_sources|join:", " }}
+            </p>
+            {% endif %}
+            
+            <p style="margin: 0.5rem 0; font-size: 0.9rem; color: #999;">
+                <strong>Frequency:</strong> {{ rec.suggested_frequency }}
+            </p>
+            
+            {% if rec.caution_note %}
+            <p style="margin: 0.5rem 0; padding: 0.5rem; background: #fee2e2; border-left: 3px solid #dc2626; font-size: 0.9rem; color: #991b1b;">
+                <strong>⚠️ Note:</strong> {{ rec.caution_note }}
+            </p>
+            {% endif %}
+        </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<div style="margin-top: 3rem; text-align: center;">
+    <a href="{% url 'recommendations:resources' %}" class="btn-primary">📚 Learn About All Vitamins</a>
+</div>
+{% endblock %}

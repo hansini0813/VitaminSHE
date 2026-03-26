@@ -1,0 +1,458 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Clinic Locator | VitaminSHE{% endblock %}
+
+{% block content %}
+<style>
+    .locator-header {
+        background: linear-gradient(135deg, #d946a6 0%, #c084fc 100%);
+        color: white;
+        padding: 2rem 1rem;
+        border-radius: 16px;
+        margin: 2rem 0;
+    }
+
+    .locator-header h1 {
+        margin: 0 0 0.5rem;
+        font-size: 2rem;
+    }
+
+    .locator-header p {
+        margin: 0;
+        font-size: 1rem;
+        opacity: 0.95;
+    }
+
+    .locator-container {
+        display: grid;
+        grid-template-columns: 1fr 300px;
+        gap: 1.5rem;
+        margin: 2rem 0;
+        height: 600px;
+    }
+
+    @media (max-width: 1024px) {
+        .locator-container {
+            grid-template-columns: 1fr;
+            height: auto;
+        }
+    }
+
+    #map {
+        border-radius: 12px;
+        border: 2px solid #e9d5ff;
+        box-shadow: 0 4px 12px rgba(217, 70, 166, 0.1);
+        height: 100%;
+        min-height: 400px;
+    }
+
+    .controls-panel {
+        background: white;
+        border: 2px solid #e9d5ff;
+        border-radius: 12px;
+        padding: 1.5rem;
+        box-shadow: 0 4px 12px rgba(217, 70, 166, 0.1);
+        height: fit-content;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .search-input {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid #d8b4fe;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-family: inherit;
+    }
+
+    .button-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .btn {
+        padding: 0.75rem 1rem;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+        font-family: inherit;
+    }
+
+    .btn-primary {
+        background: linear-gradient(120deg, #d946a6, #ec4899);
+        color: white;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(217, 70, 166, 0.3);
+    }
+
+    .btn-secondary {
+        background: #f3e5f5;
+        color: #d946a6;
+        border: 1px solid #d8b4fe;
+    }
+
+    .btn-secondary:hover {
+        background: #ede9fe;
+    }
+
+    .clinics-list {
+        max-height: 500px;
+        overflow-y: auto;
+    }
+
+    .clinic-item {
+        padding: 1rem;
+        background: #fce7f3;
+        border-left: 4px solid #d946a6;
+        margin-bottom: 0.75rem;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .clinic-item:hover {
+        background: #f5dae9;
+        transform: translateX(4px);
+    }
+
+    .clinic-name {
+        font-weight: bold;
+        color: #d946a6;
+        margin-bottom: 0.25rem;
+    }
+
+    .clinic-address {
+        font-size: 0.85rem;
+        color: #666;
+        margin-bottom: 0.25rem;
+    }
+
+    .clinic-distance {
+        font-size: 0.8rem;
+        color: #999;
+    }
+
+    .loading-spinner {
+        text-align: center;
+        padding: 1rem;
+        color: #d946a6;
+    }
+
+    .error-message {
+        padding: 1rem;
+        background: #fee2e2;
+        border-left: 4px solid #dc2626;
+        color: #991b1b;
+        border-radius: 4px;
+        margin-bottom: 1rem;
+    }
+
+    .success-message {
+        padding: 1rem;
+        background: #dbeafe;
+        border-left: 4px solid #0284c7;
+        color: #075985;
+        border-radius: 4px;
+        margin-bottom: 1rem;
+    }
+
+    .status-text {
+        font-size: 0.9rem;
+        color: #666;
+        text-align: center;
+        padding: 0.75rem 0;
+    }
+</style>
+
+<div class="locator-header">
+    <h1>🏥 Clinic Locator</h1>
+    <p>Find healthcare providers for women's vitamins and wellness near you</p>
+</div>
+
+<div id="message-container"></div>
+
+<div class="locator-container">
+    <div id="map"></div>
+    
+    <div class="controls-panel">
+        <h3 style="margin: 0 0 1rem; color: #d946a6;">Search</h3>
+        
+        <div class="button-group">
+            <button class="btn btn-primary" id="current-location-btn" onclick="getCurrentLocation()">
+                📍 Current Location
+            </button>
+            <button class="btn btn-secondary" id="search-btn" onclick="searchNearby()">
+                🔍 Search
+            </button>
+        </div>
+
+        <div style="display: none;" id="radius-controls">
+            <label style="color: #666; font-size: 0.9rem; display: block; margin-bottom: 0.5rem;">
+                Search Radius:
+                <input type="range" id="radius-slider" min="500" max="50000" step="500" value="5000" 
+                       style="width: 100%; margin-top: 0.5rem;">
+                <span id="radius-value" style="font-weight: bold; color: #d946a6;">5 km</span>
+            </label>
+        </div>
+
+        <input type="text" id="search-input" class="search-input" placeholder="Search for clinics..." 
+               style="display: none;">
+
+        <div id="status" class="status-text" style="display: none;"></div>
+
+        <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #e9d5ff;">
+            <h4 style="margin: 0 0 0.75rem; color: #d946a6; font-size: 0.95rem;">📍 Nearby Clinics</h4>
+            <div class="clinics-list" id="clinics-list">
+                <p style="color: #999; text-align: center; padding: 1rem 0; font-size: 0.9rem;">
+                    Click "Current Location" to find nearby clinics
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let map;
+    let userMarker;
+    let clinicMarkers = [];
+    const API_KEY = "{{ google_maps_api_key }}";
+
+    // Initialize map
+    function initMap() {
+        const defaultCenter = { lat: 37.7749, lng: -122.4194 }; // San Francisco as default
+        
+        map = new google.maps.Map(document.getElementById("map"), {
+            zoom: 13,
+            center: defaultCenter,
+            styles: [
+                {
+                    "featureType": "all",
+                    "elementType": "labels.text.fill",
+                    "stylers": [{"color": "#8b6f9e"}]
+                },
+                {
+                    "featureType": "water",
+                    "elementType": "geometry.fill",
+                    "stylers": [{"color": "#e9d5ff"}]
+                }
+            ]
+        });
+
+        // Add click listener to map
+        map.addListener("click", (e) => {
+            setUserMarker(e.latLng);
+        });
+    }
+
+    // Get current location
+    function getCurrentLocation() {
+        const btn = document.getElementById("current-location-btn");
+        const statusDiv = document.getElementById("status");
+        
+        if (!navigator.geolocation) {
+            showMessage("Geolocation is not supported by your browser", "error");
+            return;
+        }
+
+        btn.disabled = true;
+        btn.textContent = "📍 Getting location...";
+        statusDiv.style.display = "block";
+        statusDiv.textContent = "Fetching your location...";
+        statusDiv.style.color = "#0284c7";
+
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const userLocation = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                };
+                
+                setUserMarker(userLocation);
+                map.panTo(userLocation);
+                searchNearby(userLocation);
+                
+                btn.disabled = false;
+                btn.textContent = "📍 Current Location";
+                statusDiv.textContent = "✓ Location found";
+                statusDiv.style.color = "#075985";
+            },
+            (error) => {
+                btn.disabled = false;
+                btn.textContent = "📍 Current Location";
+                let errorMsg = "Unable to get your location. ";
+                
+                switch(error.code) {
+                    case error.PERMISSION_DENIED:
+                        errorMsg += "Permission denied. Please enable location access.";
+                        break;
+                    case error.POSITION_UNAVAILABLE:
+                        errorMsg += "Location information is unavailable.";
+                       break;
+                    case error.TIMEOUT:
+                        errorMsg += "The request to get user location timed out.";
+                        break;
+                }
+                
+                showMessage(errorMsg, "error");
+                statusDiv.style.display = "none";
+            }
+        );
+    }
+
+    // Set user marker on map
+    function setUserMarker(location) {
+        if (userMarker) {
+            userMarker.setMap(null);
+        }
+
+        userMarker = new google.maps.Marker({
+            position: location,
+            map: map,
+            title: "Your Location",
+            animation: google.maps.Animation.DROP,
+            icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+        });
+    }
+
+    // Search for nearby clinics
+    async function searchNearby(location = null) {
+        if (!location) {
+            if (!userMarker) {
+                showMessage("Please set your location first", "error");
+                return;
+            }
+            location = userMarker.getPosition();
+        }
+
+        const radius = document.getElementById("radius-slider").value || 5000;
+        const query = document.getElementById("search-input").value || "clinic";
+
+        const statusDiv = document.getElementById("status");
+        statusDiv.style.display = "block";
+        statusDiv.textContent = "Searching...";
+        statusDiv.style.color = "#0284c7";
+
+        try {
+            const response = await fetch(
+                `/locator/api/nearby/?latitude=${location.lat()}&longitude=${location.lng()}&radius=${radius}&query=${encodeURIComponent(query)}`
+            );
+            
+            if (!response.ok) {
+                const error = await response.json();
+                showMessage(error.error || "Search failed", "error");
+                statusDiv.style.display = "none";
+                return;
+            }
+
+            const data = await response.json();
+            displayClinics(data.results);
+            
+            statusDiv.textContent = `✓ Found ${data.count} clinic${data.count !== 1 ? 's' : ''}`;
+            statusDiv.style.color = "#075985";
+
+        } catch (error) {
+            showMessage("Error searching for clinics: " + error.message, "error");
+            statusDiv.style.display = "none";
+        }
+    }
+
+    // Display clinics on map and in list
+    function displayClinics(clinics) {
+        // Clear existing markers
+        clinicMarkers.forEach(marker => marker.setMap(null));
+        clinicMarkers = [];
+
+        // Clear list
+        const clinicsList = document.getElementById("clinics-list");
+        clinicsList.innerHTML = "";
+
+        if (clinics.length === 0) {
+            clinicsList.innerHTML = '<p style="color: #999; text-align: center; padding: 1rem 0;">No clinics found</p>';
+            return;
+        }
+
+        // Add markers and list items
+        clinics.forEach((clinic, index) => {
+            // Add marker
+            const marker = new google.maps.Marker({
+                position: { lat: clinic.latitude, lng: clinic.longitude },
+                map: map,
+                title: clinic.name,
+                label: String(index + 1),
+                animation: google.maps.Animation.DROP
+            });
+
+            marker.addListener("click", () => {
+                const infoWindow = new google.maps.InfoWindow({
+                    content: `<div style="color: #333;">
+                        <strong>${clinic.name}</strong><br>
+                        ${clinic.address}<br>
+                        ${clinic.phone ? `${clinic.phone}<br>` : ''}
+                        ${clinic.website ? `<a href="${clinic.website}" target="_blank">Visit</a>` : ''}
+                    </div>`
+                });
+                infoWindow.open(map, marker);
+            });
+
+            clinicMarkers.push(marker);
+
+            // Add list item
+            const listItem = document.createElement("div");
+            listItem.className = "clinic-item";
+            listItem.innerHTML = `
+                <div class="clinic-name">${index + 1}. ${clinic.name}</div>
+                <div class="clinic-address">${clinic.address}</div>
+                ${clinic.distance ? `<div class="clinic-distance">${(clinic.distance / 1000).toFixed(1)} km away</div>` : ''}
+            `;
+            listItem.onclick = () => {
+                map.panTo({ lat: clinic.latitude, lng: clinic.longitude });
+                map.setZoom(15);
+            };
+            clinicsList.appendChild(listItem);
+        });
+    }
+
+    // Show message
+    function showMessage(message, type) {
+        const container = document.getElementById("message-container");
+        const messageDiv = document.createElement("div");
+        messageDiv.className = type === "error" ? "error-message" : "success-message";
+        messageDiv.textContent = message;
+        container.innerHTML = "";
+        container.appendChild(messageDiv);
+
+        setTimeout(() => {
+            messageDiv.remove();
+        }, 5000);
+    }
+
+    // Radius slider
+    document.getElementById("radius-slider").addEventListener("input", (e) => {
+        const km = (e.target.value / 1000).toFixed(1);
+        document.getElementById("radius-value").textContent = km + " km";
+    });
+
+    // Search input
+    document.getElementById("search-input").addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+            searchNearby();
+        }
+    });
+
+    // Initialize map when page loads
+    window.addEventListener("load", initMap);
+</script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&libraries=places"></script>
+
+{% endblock %}

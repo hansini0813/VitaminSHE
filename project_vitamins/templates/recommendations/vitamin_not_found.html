@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}Vitamin Not Found | VitaminSHE{% endblock %}
+
+{% block content %}
+<div style="text-align: center; padding: 3rem 1rem;">
+    <div style="font-size: 4rem; margin-bottom: 1rem;">🔍</div>
+    <h1 style="color: #d946a6; margin-bottom: 0.5rem;">Vitamin Not Found</h1>
+    <p style="color: #666; font-size: 1.1rem; margin-bottom: 2rem;">We couldn't find the vitamin you're looking for.</p>
+    <a href="{% url 'recommendations:resources' %}" class="btn-primary">← Back to Resources</a>
+</div>
+{% endblock %}

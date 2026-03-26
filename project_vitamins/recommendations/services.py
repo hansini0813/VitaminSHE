@@ -270,3 +270,104 @@ def generate_recommendations(
         allergies_or_restrictions=allergies_restrictions,
     )
     return [result.to_dict() for result in results]
+
+
+# Vitamin calculation functions integrated from standalone VitaminSHE.py
+from datetime import datetime
+from .vitamin_data import VITAMIN_REQUIREMENTS, VITAMIN_INFO
+
+
+def calculate_age_from_date(date_of_birth):
+    """Calculate age in years from date of birth."""
+    if not date_of_birth:
+        return None
+    today = datetime.now().date()
+    age = today.year - date_of_birth.year - ((today.month, today.day) < (date_of_birth.month, date_of_birth.day))
+    return age
+
+
+def compute_age_range(age, is_pregnant=False, is_breastfeeding=False):
+    """
+    Determine the age range category for vitamin requirements.
+    
+    Args:
+        age: User's age in years
+        is_pregnant: Boolean indicating pregnancy status
+        is_breastfeeding: Boolean indicating breastfeeding status
+    
+    Returns:
+        str: Age range category
+    """
+    if age is None or age < 0:
+        return None
+    
+    # Factors in Pregnancy and Lactation
+    if is_pregnant or is_breastfeeding:
+        # If both pregnant and lactating, simulation assumes lactation label
+        if is_pregnant and is_breastfeeding:
+            return "Lact. <= 18" if age <= 18 else "Lact. 19+"
+        
+        # Checks age and pregnancy status
+        if is_pregnant:
+            return "Preg. <= 18" if age <= 18 else "Preg. 19+"
+        
+        # Checks age and lactation status
+        if is_breastfeeding:
+            return "Lact. <= 18" if age <= 18 else "Lact. 19+"
+    
+    # Non-pregnant/non-breastfeeding age ranges
+    if age < 1:
+        return "Infant"
+    elif 1 <= age <= 3:
+        return "1-3"
+    elif 4 <= age <= 8:
+        return "4-8"
+    elif 9 <= age <= 13:
+        return "9-13"
+    elif 14 <= age <= 18:
+        return "14-18"
+    elif 19 <= age <= 30:
+        return "19-30"
+    elif 31 <= age <= 50:
+        return "31-50"
+    elif 51 <= age <= 70:
+        return "51-70"
+    else:  # 71+
+        return "71+"
+
+
+def get_vitamin_recommendations(age, is_pregnant=False, is_breastfeeding=False):
+    """
+    Calculate personalized vitamin and mineral recommendations for a user.
+    
+    Args:
+        age: User's age in years
+        is_pregnant: Boolean indicating pregnancy status
+        is_breastfeeding: Boolean indicating breastfeeding status
+    
+    Returns:
+        dict: Dictionary with vitamin/mineral names and their daily requirements
+    """
+    age_range = compute_age_range(age, is_pregnant, is_breastfeeding)
+    
+    if not age_range:
+        return {}
+    
+    recommendations = {}
+    for vitamin_name, requirements in VITAMIN_REQUIREMENTS.items():
+        try:
+            recommendations[vitamin_name] = requirements.get(age_range, None)
+        except (KeyError, TypeError):
+            recommendations[vitamin_name] = None
+    
+    return recommendations
+
+
+def get_vitamin_details(vitamin_id):
+    """Get detailed information about a specific vitamin."""
+    return VITAMIN_INFO.get(vitamin_id, {})
+
+
+def get_all_vitamins_info():
+    """Get information about all vitamins and minerals."""
+    return VITAMIN_INFO
